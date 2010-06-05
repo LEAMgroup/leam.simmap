@@ -1,0 +1,2 @@
+recursive-include leam *
+global-exclude *pyc
