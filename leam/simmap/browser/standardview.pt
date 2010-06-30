@@ -2,6 +2,24 @@
       lang="en"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="leam.simmap">
+<head>
+    <script type="text/javascript" src=""
+      tal:define="props portal/portal_properties/simmap_properties;"
+      tal:attributes="src string:http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA01-FfVbmG9RcrCarzrnSPxQhOr6KWfzjyj-oR0i6-lITXbPO1RSgvBIyihUF9BdCDtDjETkmziVHDQ">
+    </script>
+
+    <script type="text/javascript">
+        var map;
+        window.onload = function() {
+            if (GBrowserIsCompatible()) {
+                var divmap = document.getElementById('map');
+                map = new GMap(divmap);
+            }
+        }
+    </script>
+
+</head>
+
 <body>
 <div>Qwerty qwert qwert</div>
 <h1>Prefix1</h1>
@@ -16,7 +34,7 @@
         <li>latlong = <b tal:content="testview/latlong"></b></li>
         <li>zoom = <b tal:content="testview/zoom"></b></li>
         <li>image size = <b tal:content="testview/size"></b></li>
-        <li>image = <b tal:content="testview/image"></b></li>
+        <li><div style="width: 400; height: 250;"></div></li>
     </ul>
 Suffix3
         </tal:main-macro>
