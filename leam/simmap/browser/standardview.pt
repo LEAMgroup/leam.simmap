@@ -13,8 +13,11 @@
         window.onload = function() {
             if (GBrowserIsCompatible()) {
                 var divmap = document.getElementById('map_canvas');
-                map = new GMap(divmap);
+                map = new GMap2(divmap);
                 map.setCenter(new GLatLng(40.11254201209941, -88.24356079101562), 11);
+                currentmapcontrol=new GLargeMapControl();
+                map.addControl(currentmapcontrol);
+
             }
         }
     </script>
@@ -35,7 +38,7 @@
         <li>latlong = <b tal:content="testview/latlong"></b></li>
         <li>zoom = <b tal:content="testview/zoom"></b></li>
         <li>image size = <b tal:content="testview/size"></b></li>
-        <li><div id="map_canvas" style="width:400px; height: 20px; background-color: gray;"></div></li>
+        <li><div id="map_canvas" style="width:400px; height: 250px; background-color: gray;"></div></li>
     </ul>
 Suffix3
         </tal:main-macro>
