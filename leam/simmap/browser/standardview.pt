@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="leam.simmap">
+<body>
+<div>Qwerty qwert qwert</div>
+<h1>Prefix1</h1>
+    <div metal:fill-slot="main">
+<h2>Prefix2</h2>
+        <tal:main-macro metal:define-macro="main"
+                        tal:define="testview view/data">
+<h3>Prefix3</h3>
+    <ul>
+        <li>The title = <span tal:content="testview/title"></span></li>
+        <li>My detailed description = <span tal:content="testview/description" /></li>
+        <li>latlong = <b tal:content="testview/latlong"></b></li>
+        <li>zoom = <b tal:content="testview/zoom"></b></li>
+        <li>image size = <b tal:content="testview/size"></b></li>
+        <li>image = <b tal:content="testview/image"></b></li>
+    </ul>
+Suffix3
+        </tal:main-macro>
+Suffix2
+    </div>
+Suffix1
+</body>
+</html>

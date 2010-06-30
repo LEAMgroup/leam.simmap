@@ -12,6 +12,10 @@ from Products.CMFCore.permissions import setDefaultRoles
 # This will be imported with the special name "_" in most modules. Strings
 # like _(u"message") will then be extracted by i18n tools for translation.
 
+
+# jsw - added 2010-06-26 - 
+setDefaultRoles('leam.simmap: Add simmap', ['Manager', 'Contributor'])
+
 simmapMessageFactory = MessageFactory('leam.simmap')
 
 def initialize(context):
