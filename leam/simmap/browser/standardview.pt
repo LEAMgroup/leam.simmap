@@ -5,15 +5,15 @@
 <head>
     <script type="text/javascript" src=""
       tal:define="props portal/portal_properties/simmap_properties;"
-      tal:attributes="src string:http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA01-FfVbmG9RcrCarzrnSPxQhOr6KWfzjyj-oR0i6-lITXbPO1RSgvBIyihUF9BdCDtDjETkmziVHDQ">
+      tal:attributes="src string:http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAL5hFv2PV01nBR51fZRekSBQMD9EWy8DSk0ATlwQdExAyeDSsDhTrhKrm8dGzndKtbbt-LvqEcisODQ">
     </script>
 
     <script type="text/javascript">
         var map;
         window.onload = function() {
             if (GBrowserIsCompatible()) {
-                var divmap = document.getElementById('map');
-                map = new GMap2(divmap);
+                var divmap = document.getElementById('map_canvas');
+                map = new GMap(divmap);
                 map.setCenter(new GLatLng(40.11254201209941, -88.24356079101562), 11);
             }
         }
@@ -35,7 +35,7 @@
         <li>latlong = <b tal:content="testview/latlong"></b></li>
         <li>zoom = <b tal:content="testview/zoom"></b></li>
         <li>image size = <b tal:content="testview/size"></b></li>
-        <li><div id="map_canvas" width="400" height="250"></div></li>
+        <li><div id="map_canvas" style="width:400px; height: 20px; background-color: gray;"></div></li>
     </ul>
 Suffix3
         </tal:main-macro>
