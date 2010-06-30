@@ -1,0 +1,195 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="SimMap">
+<head>
+<metal:block fill-slot="javascript_head_slot">
+
+<!-- google key configured in control panel -->
+<script type="text/javascript" src=""
+      tal:define="props portal/portal_properties/simmap_properties;
+                  apikey props/apikey;"
+      tal:attributes="src string:http://maps.google.com/maps?file=api&amp;v=2&amp;key=${apikey}"></script>
+
+
+<script type="text/javascript">
+//<![CDATA[
+var map;
+var currentmapcontrol;
+var currentmap;
+var currentmap2;
+var mapArray = new Array();
+var mapserver = 'http://leam4.incubator.uiuc.edu/cgi-bin/mapserv';
+//var mapserver = 'http://www.leam.uiuc.edu/cgi-bin/mapserv';
+//var mapserver = 'http://plone.rehearsal.uiuc.edu/cgi-bin/mapserv';
+
+window.onload = function() {
+        if (GBrowserIsCompatible()) {
+                var divmap = document.getElementById('map');
+		// Variables from python
+		var div=document.getElementById('outputdiv')
+		var coordstr=div.innerHTML;
+		var arr=coordstr.split(' ')
+		var lat=arr[3]
+		var lng=arr[4]
+		var trans=arr[1]
+                var zoom=arr[0]
+		var mapfile=arr[2]
+
+                map = new GMap(divmap);
+
+                // Create tile layers
+                var tileCountry= new GTileLayer(new GCopyrightCollection(""),1,17, {opacity: parseFloat(trans)});
+                tileCountry.myLayers='final4';
+                tileCountry.myBaseURL=mapserver+'?map='+mapfile;
+                tileCountry.getTileUrl=CustomGetTileUrl;
+
+		currentmapcontrol=new GLargeMapControl();
+		map.addControl(currentmapcontrol);
+		map.addControl(new GMapTypeControl());
+
+		// simImage overlay	
+                mapArray[mapfile] = new Array();
+		// Each mapArray entry is an array containing overlay + markers
+		mapArray[mapfile][0] = new GTileLayerOverlay(tileCountry);
+                map.setCenter(new GLatLng(lat, lng), parseInt(zoom));
+		map.addOverlay(mapArray[mapfile][0]);
+		addLegend(mapfile);
+
+		// markers overylay 
+		var rawmarks=document.getElementById('markers').innerHTML;
+		var markers=rawmarks.split('|');
+		var arrCount = 0;
+		var maCount = 1;
+		while((arrCount + 1) < markers.length) {
+		  var point=new GLatLng(markers[arrCount].split(',')[0],
+					markers[arrCount].split(',')[1]);
+		  var message=markers[arrCount+1];
+		  mapArray[mapfile][maCount] = createMarker(point,message);
+		  map.addOverlay(mapArray[mapfile][maCount]);
+		  arrCount = arrCount + 2;
+		  maCount++;
+		}
+        }
+
+}
+
+// Markers overlay
+function createMarker(point,message) {
+   var marker = new GMarker(point);
+   GEvent.addListener(marker, "click", function() {
+      map.openInfoWindowHtml(point, message);
+   });
+   return marker;
+}
+
+function addLegend(mapName) {
+        try{
+                var mapDiv = document.getElementById(mapName).innerHTML;
+        }
+        catch(err){ 
+               mapDiv = "<div id=\"" +mapName + "\">";
+                var oldHTML = document.getElementById('legend').innerHTML;
+                var wholeHTML = oldHTML + mapDiv;
+                document.getElementById('legend').innerHTML = wholeHTML;
+        }
+        finally{
+                var imgHTML = "<img src=\""+mapserver+"?SERVICE=WMS&VERSION=1.1.1&layer=final4&REQUEST=getlegendgraphic&FORMAT=image/png&map="+mapName+"\">";
+                document.getElementById(mapName).innerHTML = imgHTML;
+        }
+
+}
+
+function removeLegend(mapName) {
+        document.getElementById(mapName).innerHTML = " ";
+}
+
+function enableOverlay(mapName, rawmarks, trans) {
+    // Add Map Layer overlay
+    var tileCountry2= new GTileLayer(new GCopyrightCollection(""),1,17, {opacity: parseFloat(trans)});
+    tileCountry2.myLayers='final4';
+    tileCountry2.myBaseURL=mapserver+'?map='+mapName;
+    tileCountry2.getTileUrl=CustomGetTileUrl;
+    mapArray[mapName] = new Array();
+    mapArray[mapName][0] = new GTileLayerOverlay(tileCountry2);
+    map.addOverlay(mapArray[mapName][0]);
+  
+    // Add Markers
+    var markers=rawmarks.split('|');
+    var arrCount = 0;
+    var maCount = 1;
+    while((arrCount + 1)< markers.length) {
+    var point=new GLatLng(markers[arrCount].split(',')[0],
+			  markers[arrCount].split(',')[1]);
+		  var message=markers[arrCount+1];
+		  mapArray[mapName][maCount] = createMarker(point,message);
+		  map.addOverlay(mapArray[mapName][maCount]);
+		  arrCount = arrCount + 2;
+		  maCount++;
+    }
+
+    addLegend(mapName);
+}
+
+function disableOverlay(mapName) {
+    for (i=0; i < mapArray[mapName].length; i++) {
+    map.removeOverlay(mapArray[mapName][i]);
+    }
+    removeLegend(mapName);
+    map.closeInfoWindow();
+}
+
+//]]>
+</script>
+</metal:block>
+
+
+<title></title>
+</head>
+<body onload="load()"> 
+    <metal:block fill-slot="main" tal:define="
+       info python:request.get('info') or '';
+       getObjSize nocall:portal/getObjSize;
+       ">
+
+         <h1>
+           <tal:block replace="structure python:getattr(here, here.getIcon(1))"/>
+           <span tal:content="here/Title" tal:omit-tag="" tal:condition="not:info">View Title</span>
+           <span tal:content="info" tal:omit-tag="" tal:condition="info">View Info as Title</span>
+         </h1>
+
+           <p />
+         <a href="#"
+            class="link-parent"
+            tal:define="parent_url python:here.navigationParent(here, template.getId())"
+            tal:condition="parent_url"
+            tal:attributes="href parent_url"
+            i18n:translate="go_to_parent_url"
+            i18n:domain="plone">
+           Up one level
+         </a>
+         
+         <p />
+
+        <!-- Div to display Google maps in -->
+	<div id="map" style=" width:800px; height: 600px; margin:5px" class=""
+           tal:attributes="class string:${here/id}"></div>
+        <p />
+
+        <!-- A hidden divs used to extract python calls through TALES -->
+	<div id="outputdiv" style="display: none;">
+	<div id='coord' 
+	tal:replace="python:'%s'%here.getZoom()+' '+'%f'%here.getTransparency()+' %s'%here.getMapPath()+' %s'%here.getLatlong()+' '" 
+	/>
+	</div>
+	<div id="markers" style="display: none;">
+	<div id='mark' class="blank"
+		tal:replace="structure python:here.getMarkers()" />
+	</div>
+
+    <div id='details' tal:content="structure here/getDetails"></div>
+    </metal:block>
+  </body>
+</html>
