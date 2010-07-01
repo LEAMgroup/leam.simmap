@@ -24,7 +24,7 @@
         //var mapserver = 'http://plone.rehearsal.uiuc.edu/cgi-bin/mapserv';
 window.onload = function() {
         if (GBrowserIsCompatible()) {
-                var divmap = document.getElementById('map');
+                var divmap = document.getElementById('map_canvas');
 		// Variables from python
 		var div=document.getElementById('outputdiv')
 		var coordstr=div.innerHTML;
@@ -156,10 +156,9 @@ function disableOverlay(mapName) {
         <li>latlong = <b tal:content="testview/latlong"></b></li>
         <li>zoom = <b tal:content="testview/zoom"></b></li>
         <li>image size = <b tal:content="testview/size"></b></li>
-        <li><div id="map_canvas" style="width:400px; height: 250px; background-color: gray;"></div></li>
+        <li><div id="map_canvas" style="width:500px; height: 400px; background-color: gray;"></div></li>
     </ul>
      Suffix3
-        </tal:main-macro>
 
 
     <metal:block fill-slot="main" tal:define="
@@ -191,7 +190,11 @@ function disableOverlay(mapName) {
            tal:attributes="class string:${here/id}"></div>
         <p />
 
-
     </metal:block>
+
+
+        </tal:main-macro>
+
+
 </body>
 </html>
