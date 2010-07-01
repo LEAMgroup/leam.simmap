@@ -177,9 +177,9 @@ function disableOverlay(mapName) {
 
         <!-- A hidden divs used to extract python calls through TALES -->
 	<div id="outputdiv" style="display: none;">
-	<div id='coord' 
+	<!--div id='coord' 
 	tal:replace="python:'%s'%here.getZoom()+' '+'%f'%here.getTransparency()+' %s'%here.getMapPath()+' %s'%here.getLatlong()+' '" 
-	/>
+	/ -->
 	</div>
 	<div id="markers" style="display: none;">
 	<div id='mark' class="blank"
