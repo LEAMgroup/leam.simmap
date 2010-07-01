@@ -63,7 +63,7 @@ class standardView(BrowserView):
         dummy = _(u'a dummy string')
         dummy2 = self.context.title
         title = self.context.title
-        image = self.context.zoom
+        image = getMapPath();
 
         return {'dummy': dummy, 'dummy2': dummy2, 'title': title, 'image': image}
 
