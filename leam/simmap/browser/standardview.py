@@ -81,7 +81,6 @@ class standardView(BrowserView):
 
 ### old_simmap class and methods
 
-class SimMap(BaseContent):	
 	""" A Simulation Map Content Type """
 	
 	meta_type = portal_type = PROJECTNAME
