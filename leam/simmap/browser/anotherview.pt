@@ -47,7 +47,7 @@
         <li>latlong = <b tal:content="testview/latlong"></b></li>
         <li>zoom = <b tal:content="testview/zoom"></b></li>
         <li>image size = <b tal:content="testview/size"></b></li>
-        <li><div id="map_canvas" style="width:400px; height: 250px; background-color: gray;"></div></li>
+        <li>gmap = <div id="map_canvas" style="width:500px; height: 400px; background-color: gray;"></div></li>
     </ul>
 Suffix3
         </tal:main-macro>
