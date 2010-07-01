@@ -1,18 +1,59 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-      lang="en"
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="leam.simmap">
+      i18n:domain="SimMap">
+<head>
+<metal:block fill-slot="javascript_head_slot">
+
+<!-- google key configured in control panel -->
+    <script type="text/javascript" src=""
+        tal:attributes="src string:http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAL5hFv2PV01nBR51fZRekSBQMD9EWy8DSk0ATlwQdExAyeDSsDhTrhKrm8dGzndKtbbt-LvqEcisODQ">
+    </script>
+
+    <script type="text/javascript">
+//<![CDATA[
+
+        var map;
+        window.onload = function() {
+            if (GBrowserIsCompatible()) {
+                var divmap = document.getElementById('map_canvas');
+                map = new GMap2(divmap);
+                map.setCenter(new GLatLng(40.11254201209941, -88.24356079101562), 11);
+                currentmapcontrol=new GLargeMapControl();
+                map.addControl(currentmapcontrol);
+                map.setUIToDefault();
+            }
+        }
+
+//]]>
+    </script>
+</metal:block>
+<title></title>
+</head>
+
 <body>
-Qwerty
+<div>Qwerty qwert qwert</div>
+<h1>Prefix1</h1>
     <div metal:fill-slot="main">
-Asdf
+<h2>Prefix2</h2>
         <tal:main-macro metal:define-macro="main"
-                        tal:define="testview view/test">
-
-            <span tal:content="testview/dummy">test</span>
-
+                        tal:define="testview view/data">
+<h3>Prefix3</h3>
+    <ul>
+        <li>The title = <span tal:content="testview/title"></span></li>
+        <li>My detailed description = <span tal:content="testview/description" /></li>
+        <li>latlong = <b tal:content="testview/latlong"></b></li>
+        <li>zoom = <b tal:content="testview/zoom"></b></li>
+        <li>image size = <b tal:content="testview/size"></b></li>
+        <li><div id="map_canvas" style="width:400px; height: 250px; background-color: gray;"></div></li>
+    </ul>
+Suffix3
         </tal:main-macro>
-QWEQWEQWEQWEQWEQWE QWDF WEF SDF SDF SDF S
+Suffix2
     </div>
+Suffix1
 </body>
 </html>
+

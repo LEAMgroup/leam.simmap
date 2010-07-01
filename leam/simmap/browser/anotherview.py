@@ -38,5 +38,20 @@ class anotherView(BrowserView):
         test method
         """
         dummy = _(u'a dummy string')
+        dummy2 = self.context.title
+        title = self.context.title
+        image = getMapPath();
 
-        return {'dummy': dummy}
+        return {'dummy': dummy, 'dummy2': dummy2, 'title': title, 'image': image}
+
+
+    def data(self):
+        """ real data method """
+        title = self.context.title
+        description = self.context.description
+        latlong = self.context.latlong
+        zoom = self.context.zoom
+        size = (8 + 3) * 5
+        image = str(self.context.simImage)
+
+        return {'title': title, 'description': description, 'latlong': latlong, 'zoom': zoom, 'size': size, 'image': image}
