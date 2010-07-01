@@ -14,6 +14,9 @@ class IanotherView(Interface):
     def test():
         """ test method"""
 
+    def data():
+        """ access to the real data """
+
 
 class anotherView(BrowserView):
     """
