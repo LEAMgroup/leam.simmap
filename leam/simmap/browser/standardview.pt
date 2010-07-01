@@ -175,16 +175,14 @@ function disableOverlay(mapName) {
            tal:attributes="class string:${here/id}"></div>
         <p />
 
-        <!-- A hidden divs used to extract python calls through TALES -->
-	<div id="outputdiv" style="display: none;">
-	<!-- div id='coord' 
-	tal:replace="python:'%s'%here.getZoom()+' '+'%f'%here.getTransparency()+' %s'%here.getMapPath()+' %s'%here.getLatlong()+' '" 
-	/ -->
-	</div>
-	<div id="markers" style="display: none;">
-	<div id='mark' class="blank"
-		tal:replace="structure python:here.getMarkers()" />
-	</div>
+    <ul>
+        <li>The title = <span tal:content="testview/title"></span></li>
+        <li>My detailed description = <span tal:content="testview/description" /></li>
+        <li>latlong = <b tal:content="testview/latlong"></b></li>
+        <li>zoom = <b tal:content="testview/zoom"></b></li>
+        <li>image size = <b tal:content="testview/size"></b></li>
+        <li><div id="map_canvas" style="width:400px; height: 250px; background-color: gray;"></div></li>
+    </ul>
 
     <div id='details' tal:content="structure here/getDetails"></div>
     </metal:block>
