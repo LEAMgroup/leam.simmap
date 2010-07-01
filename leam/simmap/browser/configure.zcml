@@ -36,7 +36,7 @@
       for="*"
       menu="plone_displayviews"
       title="Another SimMap view"
-      action="@@view"
+      action="another_view"
       description="Another view for SimMaps"
   />
 
