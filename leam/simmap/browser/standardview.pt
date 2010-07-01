@@ -175,14 +175,19 @@ function disableOverlay(mapName) {
            tal:attributes="class string:${here/id}"></div>
         <p />
 
+        <tal:main-macro metal:define-macro="main"
+                        tal:define="testview view/data">
+<h3>Prefix3</h3>
     <ul>
-        <li>The title = <span tal:content="view/data/title"></span></li>
-        <li>My detailed description = <span tal:content="view/data/description" /></li>
-        <li>latlong = <b tal:content="view/data/latlong"></b></li>
-        <li>zoom = <b tal:content="view/data/zoom"></b></li>
-        <li>image size = <b tal:content="view/data/size"></b></li>
+        <li>The title = <span tal:content="testview/title"></span></li>
+        <li>My detailed description = <span tal:content="testview/description" /></li>
+        <li>latlong = <b tal:content="testview/latlong"></b></li>
+        <li>zoom = <b tal:content="testview/zoom"></b></li>
+        <li>image size = <b tal:content="testview/size"></b></li>
         <li><div id="map_canvas" style="width:400px; height: 250px; background-color: gray;"></div></li>
     </ul>
+Suffix3
+        </tal:main-macro>
 
     <div id='details' tal:content="structure here/getDetails"></div>
     </metal:block>
