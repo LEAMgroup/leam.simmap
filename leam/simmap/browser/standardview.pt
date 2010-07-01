@@ -147,6 +147,13 @@ function disableOverlay(mapName) {
 
 <body onload="load()"> 
 
+
+    <metal:block fill-slot="main" tal:define="
+       info python:request.get('info') or '';
+       getObjSize nocall:portal/getObjSize;
+       ">
+
+
         <tal:main-macro metal:define-macro="main"
                         tal:define="testview view/data">
     <h3>Prefix3</h3>
@@ -158,13 +165,10 @@ function disableOverlay(mapName) {
         <li>image size = <b tal:content="testview/size"></b></li>
         <li><div id="map_canvas" style="width:500px; height: 400px; background-color: gray;"></div></li>
     </ul>
-     Suffix3
+        Suffix3
+        </tal:main-macro>
 
 
-    <metal:block fill-slot="main" tal:define="
-       info python:request.get('info') or '';
-       getObjSize nocall:portal/getObjSize;
-       ">
 
          <h1>
            <tal:block replace="structure python:getattr(here, here.getIcon(1))"/>
@@ -192,8 +196,6 @@ function disableOverlay(mapName) {
 
     </metal:block>
 
-
-        </tal:main-macro>
 
 
 </body>
