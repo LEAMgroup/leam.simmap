@@ -5,14 +5,13 @@
   <!-- -*- extra stuff goes here -*- -->
 
   <browser:page
-      for="*"
-      name="third_view"
-      class=".thirdview.thirdView"
-      template="thirdview.pt"
-      allowed_interface=".thirdview.IthirdView"
+      for="leam.simmap.interfaces.Isimmap"
+      name="standard_view"
+      class=".standardview.standardView"
+      template="standardview.pt"
+      allowed_interface=".standardview.IstandardView"
       permission="zope.Public"
       />
-
 
   <browser:page
       for="*"
@@ -24,13 +23,14 @@
       />
 
   <browser:page
-      for="leam.simmap.interfaces.Isimmap"
-      name="standard_view"
-      class=".standardview.standardView"
-      template="standardview.pt"
-      allowed_interface=".standardview.IstandardView"
+      for="*"
+      name="third_view"
+      class=".thirdview.thirdView"
+      template="thirdview.pt"
+      allowed_interface=".thirdview.IthirdView"
       permission="zope.Public"
       />
+
 
   <browser:menuItem
       for="*"
