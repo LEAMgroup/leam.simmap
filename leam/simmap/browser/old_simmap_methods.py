@@ -1,13 +1,16 @@
-from zope.interface import implements, Interface
-
-from Products.Five import BrowserView
-from Products.CMFCore.utils import getToolByName
-
-from plone.app.layout.globals.interfaces import IViewView
-
-from leam.simmap import simmapMessageFactory as _
-
-# old_simmap imports
+#
+# SimMap
+#  A Map Simulation Content Type for Plone
+#
+# SimMap.py
+#  The Product
+#
+# Author: Christian Koller <admin@iecw.net>
+#         James Common, Richard Trieu, John Wang, Paul Yuan
+#         John Layman, Kora Bongen, Lawrence Han, Shawn Sethi
+#
+# Released under GNU GPL v2 or later
+#
 
 from persistent import Persistent
 #from Products.Archetypes.atapi import *
@@ -25,70 +28,6 @@ from zope.component import adapter
 import os
 import IMGconvert
 
-
-
-class IstandardView(Interface):
-    """
-    standard view interface
-    """
-
-    def test():
-        """ test method"""
-
-    def data():
-        """ access to the real data """
-
-class standardView(BrowserView):
-    """
-    standard browser view
-    """
-    implements(IstandardView, IViewView)
-
-    def __init__(self, context, request):
-        self.context = context
-        self.request = request
-
-    @property
-    def portal_catalog(self):
-        return getToolByName(self.context, 'portal_catalog')
-
-    @property
-    def portal(self):
-        return getToolByName(self.context, 'portal_url').getPortalObject()
-
-    def test(self):
-        """
-        test method
-        """
-        dummy = _(u'a dummy string')
-        dummy2 = self.context.title
-        title = self.context.title
-        image = self.context.zoom
-
-        return {'dummy': dummy, 'dummy2': dummy2, 'title': title, 'image': image}
-
-
-    def data(self):
-        """ real data method """
-        title = self.context.title
-        description = self.context.description
-        latlong = self.context.latlong
-        zoom = self.context.zoom
-        size = (8 + 3) * 5
-        image = str(self.context.simImage)
-
-        return {'title': title, 'description': description, 'latlong': latlong, 'zoom': zoom, 'size': size, 'image': image}
-
-### old_simmap class and methods
-
-class SimMap(BaseContent):	
-	""" A Simulation Map Content Type """
-	
-	meta_type = portal_type = PROJECTNAME
-	archetype_name = PROJECTNAME
-	_at_rename_after_creation = True
-	
-        security  = ClassSecurityInfo()
 	# This no longer gets used
 	# Now, all files are processed/created upon first run
 	# DEPRECATED: all functions now done on first run by getMapPath()
@@ -187,4 +126,3 @@ class SimMap(BaseContent):
 
 ## Register the new type within Zope
 #registerType(SimMap,PROJECTNAME)
-    

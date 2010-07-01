@@ -12,8 +12,6 @@
         tal:attributes="src string:http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAL5hFv2PV01nBR51fZRekSBQMD9EWy8DSk0ATlwQdExAyeDSsDhTrhKrm8dGzndKtbbt-LvqEcisODQ">
     </script>
  
-    </script type="text/javascript" src="old_simmap_funcs.js">
-
     <script type="text/javascript">
 //<![CDATA[
         var map;
