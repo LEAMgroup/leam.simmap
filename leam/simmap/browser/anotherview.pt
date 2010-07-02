@@ -17,17 +17,12 @@
 
         var map;
         window.onload = function() {
-            if (GBrowserIsCompatible()) {
                 var divmap = document.getElementById('map_canvas');
                 map = new google.maps.Map(divmap);
                 map.setCenter(new GLatLng(40.11254201209941, -88.24356079101562), 11);
-                currentmapcontrol=new GLargeMapControl();
-                map.addControl(currentmapcontrol);
-                map.setUIToDefault();
                 jq('.portletNavigationTree').slideUp(3000, function () {
                     jq('.portlet').slideDown(1000);
                 });
-            }
         }
 
 //]]>
