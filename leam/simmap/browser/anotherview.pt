@@ -24,6 +24,7 @@
           map.setOptions({disableDefaultUI: false});
         });
         google.maps.event.addDomListener(divmap, "mouseout", function() {
+          alert("You just moused out of the map");
           map.setOptions({disableDefaultUI: true});
         });
         jq('.portletNavigationTree').slideUp(3000, function () {
