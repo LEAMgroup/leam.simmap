@@ -21,10 +21,10 @@
         var options = {zoom: 11, center: ctr, mapTypeId: google.maps.MapTypeId.ROADMAP};
         var map = new google.maps.Map(divmap, options);
         google.maps.event.addListener(divmap, "mouseover", function() {
-          map.setOptions(disableDefaultUI: false);
+          map.setOptions({disableDefaultUI: false});
         })
         google.maps.event.addListener(divmap, "mouseout", function() {
-          map.setOptions(disableDefaultUI: true);
+          map.setOptions({disableDefaultUI: true});
         })
         jq('.portletNavigationTree').slideUp(3000, function () {
             jq('.portlet').slideDown(1000);
@@ -51,7 +51,7 @@
         <li>latlong = <b tal:content="testview/latlong"></b></li>
         <li>zoom = <b tal:content="testview/zoom"></b></li>
         <li>image size = <b tal:content="testview/size"></b></li>
-        <li>gmap = <div id="map_canvas" style="width:500px; height: 400px; background-color: gray;"></div></li>
+        <li>gmap = <div id="map_canvas" style="width: 95%; height: 400px; background-color: gray;"></div></li>
     </ul>
 Suffix3
         </tal:main-macro>
