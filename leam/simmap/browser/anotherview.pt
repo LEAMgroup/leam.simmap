@@ -9,7 +9,7 @@
 
 <!-- google key configured in control panel -->
 <script type="text/javascript" src=""
-    tal:attributes="src string:http://maps.google.com/maps/api/js?sensor=false&amp;key=ABQIAAAAL5hFv2PV01nBR51fZRekSBQMD9EWy8DSk0ATlwQdExAyeDSsDhTrhKrm8dGzndKtbbt-LvqEcisODQ">
+    tal:attributes="src string:http://maps.google.com/maps/api/js?sensor=false">
 </script>
 
 <script type="text/javascript">
