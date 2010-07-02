@@ -17,7 +17,7 @@
 
     window.onload = function() {
         var divmap = document.getElementById('map_canvas');
-        var ctr = new google.maps.LatLng(40.11254201209941, -88.24356079101562)
+        var ctr = new google.maps.LatLng(40.11254201209941, -88.24356079101562);
         var options = {zoom: 11, center: ctr, mapTypeId: google.maps.Map.ROADMAP};
         map = new google.maps.Map(divmap, options);
         jq('.portletNavigationTree').slideUp(3000, function () {
