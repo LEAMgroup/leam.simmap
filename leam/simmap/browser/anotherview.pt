@@ -20,12 +20,13 @@
         var ctr = new google.maps.LatLng(40.11254201209941, -88.24356079101562);
         var options = {zoom: 11, center: ctr, mapTypeId: google.maps.MapTypeId.ROADMAP};
         var map = new google.maps.Map(divmap, options);
-        google.maps.event.addListener(divmap, "mouseover", function() {
-          map.setOptions({disableDefaultUI: false});
+        google.maps.event.addDomListener(divmap, "mouseover", function() {
+          map.setOptions({mapTypeControl: true});
+          map.setOptions({navigationControl: true});
         });
-        google.maps.event.addListener(divmap, "mouseout", function() {
-          alert("You just moused out of the map");
-          map.setOptions({disableDefaultUI: true});
+        google.maps.event.addDomListener(divmap, "mouseout", function() {
+          map.setOptions({mapTypeControl: false});
+          map.setOptions({navigationControl: false});
         });
         jq('.portletNavigationTree').slideUp(3000, function () {
             jq('.portlet').slideDown(1000);
