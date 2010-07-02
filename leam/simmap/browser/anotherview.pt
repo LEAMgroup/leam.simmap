@@ -9,7 +9,7 @@
 
 <!-- google key configured in control panel -->
     <script type="text/javascript" src=""
-        tal:attributes="src string:http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAL5hFv2PV01nBR51fZRekSBQMD9EWy8DSk0ATlwQdExAyeDSsDhTrhKrm8dGzndKtbbt-LvqEcisODQ">
+        tal:attributes="src string:http://maps.google.com/maps/api/js?sensor=false&amp;key=ABQIAAAAL5hFv2PV01nBR51fZRekSBQMD9EWy8DSk0ATlwQdExAyeDSsDhTrhKrm8dGzndKtbbt-LvqEcisODQ">
     </script>
 
     <script type="text/javascript">
@@ -19,7 +19,7 @@
         window.onload = function() {
             if (GBrowserIsCompatible()) {
                 var divmap = document.getElementById('map_canvas');
-                map = new GMap2(divmap);
+                map = new google.maps.Map(divmap);
                 map.setCenter(new GLatLng(40.11254201209941, -88.24356079101562), 11);
                 currentmapcontrol=new GLargeMapControl();
                 map.addControl(currentmapcontrol);
