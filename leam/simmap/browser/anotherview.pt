@@ -24,7 +24,7 @@
                 currentmapcontrol=new GLargeMapControl();
                 map.addControl(currentmapcontrol);
                 map.setUIToDefault();
-                jquery('.portletNavigationTree').slideUp(5000);
+                jq('.portletNavigationTree').slideUp(5000);
             }
         }
 
