@@ -22,10 +22,10 @@
         var map = new google.maps.Map(divmap, options);
         google.maps.event.addDomListener(divmap, "mouseover", function() {
           map.setOptions({disableDefaultUI: false});
-        })
+        });
         google.maps.event.addDomListener(divmap, "mouseout", function() {
           map.setOptions({disableDefaultUI: true});
-        })
+        });
         jq('.portletNavigationTree').slideUp(3000, function () {
             jq('.portlet').slideDown(1000);
         });
