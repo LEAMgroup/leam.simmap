@@ -20,11 +20,7 @@
         var ctr = new google.maps.LatLng(40.11254201209941, -88.24356079101562);
         var options = {zoom: 11, center: ctr, mapTypeId: google.maps.MapTypeId.ROADMAP, mapTypeControl: false, navigationControl: false};
         var map = new google.maps.Map(divmap, options);
-        google.maps.event.addDomListener(divmap, "mouseover", function() {
-          map.setOptions({mapTypeControl: true});
-          map.setOptions({navigationControl: true});
-        });
-        $('#map_options_tag').click(function() {
+        jq('#map_options_tag').click(function() {
           jq('#map_options').slideToggle(slow);
         });
         jq('.portletNavigationTree').slideUp(3000, function () {
@@ -54,7 +50,7 @@
         <li>image size = <b tal:content="testview/size"></b></li>
         <li>
           <div id="map_canvas" style="width: 95%; height: 400px; background-color: gray;"></div>
-          <div id="map_options_tag">options +/-</div>
+          <div id="map_options_tag" style="cursor: hand;">options +/-</div>
           <div id="map_options" style="display: none;">Here<br />are<br />the<br />options.</div>
         </li>
     </ul>
