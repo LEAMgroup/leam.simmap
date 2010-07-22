@@ -17,14 +17,15 @@
 
     window.onload = function() {
         var divmap = document.getElementById('map_canvas');
+        var outer_map = document.getElementById('map_canvas');
         var ctr = new google.maps.LatLng(40.11254201209941, -88.24356079101562);
         var options = {zoom: 11, center: ctr, mapTypeId: google.maps.MapTypeId.ROADMAP};
         var map = new google.maps.Map(divmap, options);
-        google.maps.event.addDomListener(divmap, "mouseover", function() {
+        google.maps.event.addDomListener(outer_map, "mouseover", function() {
           map.setOptions({mapTypeControl: true});
           map.setOptions({navigationControl: true});
         });
-        google.maps.event.addDomListener(divmap, "mouseout", function() {
+        google.maps.event.addDomListener(outer_map, "mouseout", function() {
           map.setOptions({mapTypeControl: false});
           map.setOptions({navigationControl: false});
         });
@@ -53,7 +54,7 @@
         <li>latlong = <b tal:content="testview/latlong"></b></li>
         <li>zoom = <b tal:content="testview/zoom"></b></li>
         <li>image size = <b tal:content="testview/size"></b></li>
-        <li>gmap = <div id="map_canvas" style="width: 95%; height: 400px; background-color: gray;"></div></li>
+        <li>gmap = <div id="outer_map" style="padding: 10px; z-index: 5000;"><div id="map_canvas" style="width: 95%; height: 400px; background-color: gray;"></div></div></li>
     </ul>
 Suffix3
         </tal:main-macro>
