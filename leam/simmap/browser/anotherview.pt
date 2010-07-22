@@ -22,7 +22,7 @@
         var map = new google.maps.Map(divmap, options);
         jq('#map_options_tag').click(function() {
           alert("Boo");
-          jq('#map_options').slideToggle(slow);
+          jq('#map_options').slideToggle('slow');
         });
         jq('.portletNavigationTree').slideUp(3000, function () {
             jq('.portlet').slideDown(1000);
@@ -52,7 +52,7 @@
         <li>
           <div id="map_canvas" style="width: 95%; height: 400px; background-color: gray;"></div>
           <div id="map_options_tag" style="cursor: pointer;">options +/-</div>
-          <div id="map_options" style="">Here<br />are<br />the<br />options.</div>
+          <div id="map_options" style="display: none;">Here<br />are<br />the<br />options.</div>
         </li>
     </ul>
 Suffix3
