@@ -50,7 +50,7 @@
         <li>image size = <b tal:content="testview/size"></b></li>
         <li>
           <div id="map_canvas" style="width: 95%; height: 400px; background-color: gray;"></div>
-          <div id="map_options_tag" style="cursor: hand;">options +/-</div>
+          <div id="map_options_tag" style="cursor: pointer;">options +/-</div>
           <div id="map_options" style="display: none;">Here<br />are<br />the<br />options.</div>
         </li>
     </ul>
