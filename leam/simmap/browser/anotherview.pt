@@ -21,7 +21,6 @@
         var options = {zoom: 11, center: ctr, mapTypeId: google.maps.MapTypeId.ROADMAP, mapTypeControl: false, navigationControl: false};
         var map = new google.maps.Map(divmap, options);
         jq('#map_options_tag').click(function() {
-          alert("Boo");
           jq('#map_options').slideToggle('slow');
         });
         jq('.portletNavigationTree').slideUp(3000, function () {
