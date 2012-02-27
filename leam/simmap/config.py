@@ -5,5 +5,5 @@ PROJECTNAME = 'leam.simmap'
 
 ADD_PERMISSIONS = {
     # -*- extra stuff goes here -*-
-    'simmap': 'leam.simmap: Add simmap',
+    'SimMap': 'leam.simmap: Add SimMap',
 }

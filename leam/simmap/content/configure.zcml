@@ -6,14 +6,10 @@
   <!-- configure your content components here -->
   
   <!-- -*- extra stuff goes here -*- -->
-  <class class=".simmap.simmap">
+  <class class=".simmap.SimMap">
     <require
         permission="zope2.View"
-        interface="..interfaces.Isimmap"
-        />
-    <require
-        permission="cmf.ModifyPortalContent"
-        set_schema="..interfaces.Isimmap"
+        interface="..interfaces.ISimMap"
         />
   </class>
 

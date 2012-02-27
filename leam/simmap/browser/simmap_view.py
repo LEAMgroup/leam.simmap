@@ -6,20 +6,15 @@ from Products.CMFCore.utils import getToolByName
 from leam.simmap import simmapMessageFactory as _
 
 
-class IthirdView(Interface):
-    """
-    third view interface
-    """
+class ISimMapView(Interface):
+    """SimMap view interace"""
 
-    def test():
-        """ test method"""
+    contents = schema.Object(Inteface)
 
 
-class thirdView(BrowserView):
-    """
-    third browser view
-    """
-    implements(IthirdView)
+class SimMapView(BrowserView):
+    """SimMap browser view"""
+    implements(ISimMapView)
 
     def __init__(self, context, request):
         self.context = context
@@ -33,10 +28,11 @@ class thirdView(BrowserView):
     def portal(self):
         return getToolByName(self.context, 'portal_url').getPortalObject()
 
-    def test(self):
+    def __call__(self):
         """
-        test method
+        Render the content item
         """
-        dummy = _(u'a dummy string')
+        pass
 
-        return {'dummy': dummy}
+
+

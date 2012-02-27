@@ -1,51 +1,17 @@
-<configure 
+<configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="leam.simmap">
+
+  <include package="plone.app.contentmenu" />
+
   <!-- -*- extra stuff goes here -*- -->
 
-  <browser:page
-      for="leam.simmap.interfaces.Isimmap"
-      name="standard_view"
-      class=".standardview.standardView"
-      template="standardview.pt"
-      allowed_interface=".standardview.IstandardView"
-      permission="zope.Public"
-      />
-
-  <browser:page
-      for="*"
-      name="another_view"
-      class=".anotherview.anotherView"
-      template="anotherview.pt"
-      allowed_interface=".anotherview.IanotherView"
-      permission="zope.Public"
-      />
-
-  <browser:page
-      for="*"
-      name="third_view"
-      class=".thirdview.thirdView"
-      template="thirdview.pt"
-      allowed_interface=".thirdview.IthirdView"
-      permission="zope.Public"
-      />
-
-
-  <browser:menuItem
-      for="*"
-      menu="plone_displayviews"
-      title="Another SimMap view"
-      action="another_view"
-      description="Another view for SimMaps"
-  />
-
-  <browser:menuItem
-      for="leam.simmap.interfaces.Isimmap"
-      menu="plone_displayviews"
-      title="Standard SimMap view"
-      action="standard_view"
-      description="The standard view for SimMaps"
-  />
+    <browser:page
+        name="simmap_view"
+        for="*"
+        permission="zope.Public"
+        template="simmap_view.pt"
+        />
 
 </configure>

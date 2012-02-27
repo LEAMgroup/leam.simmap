@@ -1,0 +1,83 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n" lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="leam.simmap">
+<head>
+  <metal:block fill-slot="top_slot"
+    tal:define="dummy python:request.set('disable_border',1);
+                portal_state context/@@plone_portal_state;
+                portal_url portal_state/portal_url" />
+    <metal:block metal:fill-slot="javascript_head_slot">
+      <script type="text/javascript" src="http://leam5.incubator.uiuc.edu/jefft/OpenLayers.js">
+            <!-- tal:attributes="src string:$portal_url/OpenLayers.js"> -->
+      </script>
+
+      <script type="text/javascript">
+          jq(window).bind('load', function() {
+              var mapserv = 'http://datacenter.leamgroup.com/cgi-bin/mapserv';
+              var mappath = document.getElementById('map_mappath').innerHTML;
+              var trans = document.getElementById('map_transparency').innerHTML;
+              var zoom = document.getElementById('map_zoom').innerHTML;
+              var ll = document.getElementById('map_latlong').innerHTML;
+              var arr = ll.split(' ');
+              var lat = arr[0];
+              var lon = arr[1];
+
+              map = new OpenLayers.Map({div: 'map', allOverlays: true});
+              osm = new OpenLayers.Layer.OSM( "Simple OSM Map");
+              simmap = new OpenLayers.Layer.MapServer( "OpenLayers WMS",
+                  mapserv, {map: mappath});
+              map.addLayers([simmap, osm]);
+              map.setCenter(new OpenLayers.LonLat(lon, lat).transform(
+                 new OpenLayers.Projection("EPSG:4326"),
+                 map.getProjectionObject()), zoom);    
+              }
+          );
+      </script>
+  </metal:block>
+
+</head>
+
+<body>
+
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main">
+
+    <div tal:replace="structure provider:plone.abovecontenttitle" />
+
+    <h1 class="documentFirstHeading">
+      <metal:field use-macro="python:here.widget('title', mode='view')" />
+    </h1>
+
+    <div tal:replace="structure provider:plone.belowcontenttitle" />
+    
+    <p class="documentDescription" style="display:none">
+      <metal:field use-macro="python:here.widget('description', mode='view')"/>
+    </p>
+
+    <div tal:replace="structure provider:plone.abovecontentbody" />
+
+    <div id="map" class="olMap" style="width:100%;height: 500px;">
+                <!-- openlayers map -->
+    </div>
+    <div id="map_parameters" style="display:none;">
+      <div id="map_mappath" tal:content="python:here.getMapPath()" />
+      <div id="map_transparency" tal:content="context/transparency" />
+      <div id="map_latlong" tal:content="context/latlong" />
+      <div id="map_zoom" tal:content="python:here.getZoom()" />
+    </div>
+    <p tal:content="python:here.getMapPath()" />
+
+    <p class="documentDescription">
+      <metal:field use-macro="python:here.widget('content', mode='view')"/>
+    </p>
+        
+    <div tal:replace="structure provider:plone.belowcontentbody" />
+
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>

@@ -30,37 +30,32 @@ do this using the default user from PloneTestCase:
 
     >>> from Products.PloneTestCase.setup import portal_owner, default_password
 
-    >>> browser.open(portal_url)
+Because add-on themes or products may remove or hide the login portlet, this test will use the login form that comes with plone.  
 
-We have the login portlet, so let's use that.
-
+    >>> browser.open(portal_url + '/login_form')
     >>> browser.getControl(name='__ac_name').value = portal_owner
     >>> browser.getControl(name='__ac_password').value = default_password
     >>> browser.getControl(name='submit').click()
 
 Here, we set the value of the fields on the login form and then simulate a
-submit click.
-
-We then test that we are still on the portal front page:
-
-    >>> browser.url == portal_url
-    True
-
-And we ensure that we get the friendly logged-in message:
+submit click.  We then ensure that we get the friendly logged-in message:
 
     >>> "You are now logged in" in browser.contents
     True
 
+Finally, let's return to the front page of our site before continuing
+
+    >>> browser.open(portal_url)
 
 -*- extra stuff goes here -*-
-The simmap content type
+The SimMap content type
 ===============================
 
-In this section we are tesing the simmap content type by performing
-basic operations like adding, updadating and deleting simmap content
+In this section we are tesing the SimMap content type by performing
+basic operations like adding, updadating and deleting SimMap content
 items.
 
-Adding a new simmap content item
+Adding a new SimMap content item
 --------------------------------
 
 We use the 'Add new' menu to add a new content item.
@@ -68,54 +63,54 @@ We use the 'Add new' menu to add a new content item.
     >>> browser.getLink('Add new').click()
 
 Then we select the type of item we want to add. In this case we select
-'simmap' and click the 'Add' button to get to the add form.
+'SimMap' and click the 'Add' button to get to the add form.
 
-    >>> browser.getControl('simmap').click()
+    >>> browser.getControl('SimMap').click()
     >>> browser.getControl(name='form.button.Add').click()
-    >>> 'simmap' in browser.contents
+    >>> 'SimMap' in browser.contents
     True
 
 Now we fill the form and submit it.
 
-    >>> browser.getControl(name='title').value = 'simmap Sample'
+    >>> browser.getControl(name='title').value = 'SimMap Sample'
     >>> browser.getControl('Save').click()
     >>> 'Changes saved' in browser.contents
     True
 
-And we are done! We added a new 'simmap' content item to the portal.
+And we are done! We added a new 'SimMap' content item to the portal.
 
-Updating an existing simmap content item
+Updating an existing SimMap content item
 ---------------------------------------
 
 Let's click on the 'edit' tab and update the object attribute values.
 
     >>> browser.getLink('Edit').click()
-    >>> browser.getControl(name='title').value = 'New simmap Sample'
+    >>> browser.getControl(name='title').value = 'New SimMap Sample'
     >>> browser.getControl('Save').click()
 
 We check that the changes were applied.
 
     >>> 'Changes saved' in browser.contents
     True
-    >>> 'New simmap Sample' in browser.contents
+    >>> 'New SimMap Sample' in browser.contents
     True
 
-Removing a/an simmap content item
+Removing a/an SimMap content item
 --------------------------------
 
-If we go to the home page, we can see a tab with the 'New simmap
+If we go to the home page, we can see a tab with the 'New SimMap
 Sample' title in the global navigation tabs.
 
     >>> browser.open(portal_url)
-    >>> 'New simmap Sample' in browser.contents
+    >>> 'New SimMap Sample' in browser.contents
     True
 
-Now we are going to delete the 'New simmap Sample' object. First we
-go to the contents tab and select the 'New simmap Sample' for
+Now we are going to delete the 'New SimMap Sample' object. First we
+go to the contents tab and select the 'New SimMap Sample' for
 deletion.
 
     >>> browser.getLink('Contents').click()
-    >>> browser.getControl('New simmap Sample').click()
+    >>> browser.getControl('New SimMap Sample').click()
 
 We click on the 'Delete' button.
 
@@ -123,24 +118,24 @@ We click on the 'Delete' button.
     >>> 'Item(s) deleted' in browser.contents
     True
 
-So, if we go back to the home page, there is no longer a 'New simmap
+So, if we go back to the home page, there is no longer a 'New SimMap
 Sample' tab.
 
     >>> browser.open(portal_url)
-    >>> 'New simmap Sample' in browser.contents
+    >>> 'New SimMap Sample' in browser.contents
     False
 
-Adding a new simmap content item as contributor
+Adding a new SimMap content item as contributor
 ------------------------------------------------
 
-Not only site managers are allowed to add simmap content items, but
+Not only site managers are allowed to add SimMap content items, but
 also site contributors.
 
 Let's logout and then login as 'contributor', a portal member that has the
 contributor role assigned.
 
     >>> browser.getLink('Log out').click()
-    >>> browser.open(portal_url)
+    >>> browser.open(portal_url + '/login_form')
     >>> browser.getControl(name='__ac_name').value = 'contributor'
     >>> browser.getControl(name='__ac_password').value = default_password
     >>> browser.getControl(name='submit').click()
@@ -150,26 +145,26 @@ We use the 'Add new' menu to add a new content item.
 
     >>> browser.getLink('Add new').click()
 
-We select 'simmap' and click the 'Add' button to get to the add form.
+We select 'SimMap' and click the 'Add' button to get to the add form.
 
-    >>> browser.getControl('simmap').click()
+    >>> browser.getControl('SimMap').click()
     >>> browser.getControl(name='form.button.Add').click()
-    >>> 'simmap' in browser.contents
+    >>> 'SimMap' in browser.contents
     True
 
 Now we fill the form and submit it.
 
-    >>> browser.getControl(name='title').value = 'simmap Sample'
+    >>> browser.getControl(name='title').value = 'SimMap Sample'
     >>> browser.getControl('Save').click()
     >>> 'Changes saved' in browser.contents
     True
 
-Done! We added a new simmap content item logged in as contributor.
+Done! We added a new SimMap content item logged in as contributor.
 
 Finally, let's login back as manager.
 
     >>> browser.getLink('Log out').click()
-    >>> browser.open(portal_url)
+    >>> browser.open(portal_url + '/login_form')
     >>> browser.getControl(name='__ac_name').value = portal_owner
     >>> browser.getControl(name='__ac_password').value = default_password
     >>> browser.getControl(name='submit').click()

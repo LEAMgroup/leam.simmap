@@ -2,8 +2,9 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
     i18n_domain="leam.simmap">
-
+    
   <five:registerPackage package="." initialize=".initialize" />
 
   <!-- Include the sub-packages that use their own configure.zcml files. -->
@@ -14,17 +15,12 @@
   <!-- Register the installation GenericSetup extension profile -->
   <genericsetup:registerProfile
       name="default"
-      title="simmap"
+      title="LEAM SimMap"
       directory="profiles/default"
-      description=""
+      description="A map viewer with selectable overlays."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
   
   <!-- -*- extra stuff goes here -*- -->
-
-  <permission
-      id="leam.simmap.Addsimmap"
-      title="leam.simmap Add SimMap"
-  />
 
 </configure>

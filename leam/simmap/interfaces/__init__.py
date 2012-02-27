@@ -1,3 +1,2 @@
 # -*- extra stuff goes here -*-
-from simmap import Isimmap
-
+from simmap import ISimMap
