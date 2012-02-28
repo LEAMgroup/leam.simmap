@@ -1,7 +1,13 @@
+CHANGES.txt
+CONTRIBUTORS.txt
 MANIFEST.in
 README.txt
 setup.cfg
 setup.py
+docs/HISTORY.txt
+docs/INSTALL.txt
+docs/LICENSE.GPL
+docs/LICENSE.txt
 leam/__init__.py
 leam.simmap.egg-info/PKG-INFO
 leam.simmap.egg-info/SOURCES.txt
@@ -16,7 +22,6 @@ leam/simmap/README.txt
 leam/simmap/__init__.py
 leam/simmap/config.py
 leam/simmap/configure.zcml
-leam/simmap/browser/.simmap_view.pt.swp
 leam/simmap/browser/__init__.py
 leam/simmap/browser/configure.zcml
 leam/simmap/browser/simmap_view.pt

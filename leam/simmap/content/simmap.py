@@ -217,6 +217,13 @@ class SimMap(base.ATCTContent):
 
         return mymap
 
+    security.declarePublic("get_mapserve")
+    def get_mapserve(self, REQUEST, RESPONSE):
+        """redirects to the mapserver to aid in debugging"""
+        mymap = self.getMapPath()
+        RESPONSE.redirect("http://datacenter.leamgroup.com/cgi-bin/mapserv?mode=map&map=%s" % mymap)
+        
+
     #security.declareProtected(permissions.View, "get_layer")
     security.declarePublic("get_layer")
     def get_layer(self, REQUEST, RESPONSE):
