@@ -19,6 +19,13 @@ class ISimMap(Interface):
         description=_(u"Mapserver Map File"),
     )
 
+    details = schema.Text(
+        title=_(u"Details"), 
+        required=False,
+        description=_(u"A detailed description of the SimMap"),
+    )
+
+
     transparency = schema.Float(
         title=_(u"Transparency"), 
         required=False,

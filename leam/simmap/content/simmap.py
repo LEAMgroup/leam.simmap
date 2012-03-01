@@ -42,13 +42,13 @@ simmapSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
     ),
 
 
-    atapi.TextField('content',
+    atapi.TextField('details',
         storage=atapi.AnnotationStorage(),
         default_content_type='text/html',
         allowable_content_type='(text/html, text/plain)',
         default_output_type='text/x-html-safe',
         widget=atapi.RichWidget(
-            label=_(u"Content"),
+            label=_(u"Details"),
             description=_(u"Description of GIS Layer"),
         ),
     ),
@@ -109,7 +109,7 @@ class SimMap(base.ATCTContent):
     # -*- Your ATSchema to Python Property Bridges Here ... -*-
     simImage = atapi.ATFieldProperty('simImage')
     mapFile = atapi.ATFieldProperty('mapFile')
-    content = atapi.ATFieldProperty('content')
+    details = atapi.ATFieldProperty('details')
     transparency = atapi.ATFieldProperty('transparency')
     latlong = atapi.ATFieldProperty('latlong')
     zoom = atapi.ATFieldProperty('zoom')
