@@ -1,15 +1,16 @@
 from zope.interface import implements, Interface
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
 
 from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
 
 from leam.simmap import simmapMessageFactory as _
+from leam.simmap.interfaces import ISimMapSettings
 
 
 class ISimMapView(Interface):
     """SimMap view interace"""
-
-    contents = schema.Object(Inteface)
 
 
 class SimMapView(BrowserView):
@@ -19,6 +20,8 @@ class SimMapView(BrowserView):
     def __init__(self, context, request):
         self.context = context
         self.request = request
+        registry = getUtility(IRegistry)
+        self.settings = registry.forInterface(ISimMapSettings)
 
     @property
     def portal_catalog(self):
@@ -28,11 +31,6 @@ class SimMapView(BrowserView):
     def portal(self):
         return getToolByName(self.context, 'portal_url').getPortalObject()
 
-    def __call__(self):
-        """
-        Render the content item
-        """
-        pass
-
-
+    def mapserver(self):
+        return self.settings.mapserver
 

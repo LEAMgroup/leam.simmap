@@ -6,18 +6,26 @@
       i18n:domain="leam.simmap">
 <head>
   <metal:block fill-slot="top_slot"
-    tal:define="dummy python:request.set('disable_border',1);
+    tal:define="dummy python:request.set('disable_border',0);
                 portal_state context/@@plone_portal_state;
                 portal_url portal_state/portal_url" />
     <metal:block metal:fill-slot="javascript_head_slot">
-      <script type="text/javascript" src="http://leam5.incubator.uiuc.edu/jefft/OpenLayers.js">
-            <!-- tal:attributes="src string:$portal_url/OpenLayers.js"> -->
+
+      <!--
+      <script src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA01-FfVbmG9RcrCarzrnSPxQhOr6KWfzjyj-oR0i6-lITXbPO1RSgvBIyihUF9BdCDtDjETkmziVHDQ'>
+      </script>
+      -->
+      <script src="http://maps.googleapis.com/maps/api/js?v=3.6&amp;sensor=false"></script>
+      <script type="text/javascript" src="http://leam5.incubator.uiuc.edu/jefft/openlayers/lib/OpenLayers.js">
+      <script type="text/javascript" src="http://leam5.incubator.uiuc.edu/jefft/openlayers/examples/google-v3.js">
+            // tal:attributes="src string:$portal_url/OpenLayers.js">
       </script>
 
       <script type="text/javascript">
           jq(window).bind('load', function() {
-              var mapserv = 'http://datacenter.leamgroup.com/cgi-bin/mapserv';
+              var mapserv = document.getElementById('map_mapserver').innerHTML;
               var mappath = document.getElementById('map_mappath').innerHTML;
+              var title = document.getElementById('map_title').innerHTML;
               var trans = document.getElementById('map_transparency').innerHTML;
               var zoom = document.getElementById('map_zoom').innerHTML;
               var ll = document.getElementById('map_latlong').innerHTML;
@@ -25,11 +33,32 @@
               var lat = arr[0];
               var lon = arr[1];
 
-              map = new OpenLayers.Map({div: 'map', allOverlays: true});
-              osm = new OpenLayers.Layer.OSM( "Simple OSM Map");
-              simmap = new OpenLayers.Layer.MapServer( "OpenLayers WMS",
-                  mapserv, {map: mappath});
-              map.addLayers([simmap, osm]);
+              var options = {
+                  projection: "EPSG:900913",
+                  //allOverlays: true,
+                  };
+              map = new OpenLayers.Map('map', options);
+              map.addControl(new OpenLayers.Control.LayerSwitcher());
+
+              var blayer = new OpenLayers.Layer.Google("Google Map",
+                  {sphericalMercator: true});
+              //var osm = new OpenLayers.Layer.OSM("Simple OSM");
+              
+              var simmap = new OpenLayers.Layer.WMS( title,
+                  mapserv,
+                  { "map": mappath, 
+                    sphericalMercator: true,
+                    transparent: true, 
+                    format: "image/png",
+                    layers: "final4",
+                  },
+                  { 
+                    isBaseLayer: false, 
+                    opacity: trans,
+                  });
+
+              map.addLayers([blayer, simmap]);
+
               map.setCenter(new OpenLayers.LonLat(lon, lat).transform(
                  new OpenLayers.Projection("EPSG:4326"),
                  map.getProjectionObject()), zoom);    
@@ -63,15 +92,18 @@
                 <!-- openlayers map -->
     </div>
     <div id="map_parameters" style="display:none;">
+      <div id="map_mapserver" tal:content="view/mapserver" />
       <div id="map_mappath" tal:content="python:here.getMapPath()" />
+      <div id="map_title" tal:content="context/title_or_id" />
       <div id="map_transparency" tal:content="context/transparency" />
       <div id="map_latlong" tal:content="context/latlong" />
-      <div id="map_zoom" tal:content="python:here.getZoom()" />
+      <div id="map_zoom" tal:content="context/zoom" />
+      
     </div>
-    <p tal:content="python:here.getMapPath()" />
 
+    <p id="request">request</p>
     <p class="documentDescription">
-      <metal:field use-macro="python:here.widget('content', mode='view')"/>
+      <metal:field use-macro="python:here.widget('details', mode='view')"/>
     </p>
         
     <div tal:replace="structure provider:plone.belowcontentbody" />

@@ -229,22 +229,25 @@ class SimMap(base.ATCTContent):
     def get_layer(self, REQUEST, RESPONSE):
         """Download the GIS Layer"""
 
-        p = self.getSimImage().path
-        RESPONSE.setHeader('X-Sendfile', p);
-        RESPONSE.setHeader('Content-Type', 'application/octet-stream')
-        RESPONSE.setHeader('Content-Disposition',
-              'attachment; filename="' + str(os.path.basename(p)) + '"')
+        RESPONSE.redirect(context.absolute_url()+'/download_at/simImage')
+        return
+        #RESPONSE.setHeader('X-Sendfile', p);
+        #RESPONSE.setHeader('Content-Type', 'application/octet-stream')
+        #RESPONSE.setHeader('Content-Disposition',
+        #      'attachment; filename="' + str(os.path.basename(p)) + '"')
 
     #security.declareProtected(permissions.View, "get_mapfile")
     security.declarePublic("get_mapfile")
     def get_mapfile(self, REQUEST, RESPONSE):
         """Download the mapfile """
 
-        p = self.getMapFile().path
-        RESPONSE.setHeader('X-Sendfile', p);
-        RESPONSE.setHeader('Content-Type', 'text/plain')
-        RESPONSE.setHeader('Content-Disposition',
-              'attachment; filename="' + str(os.path.basename(p)) + '"')
+        RESPONSE.redirect(context.absolute_url()+'/download_at/mapFile')
+        return
+        #p = self.getMapFile().path
+        #RESPONSE.setHeader('X-Sendfile', p);
+        #RESPONSE.setHeader('Content-Type', 'text/plain')
+        #RESPONSE.setHeader('Content-Disposition',
+        #      'attachment; filename="' + str(os.path.basename(p)) + '"')
 
 
 atapi.registerType(SimMap, PROJECTNAME)
