@@ -16,19 +16,18 @@
       </script>
       -->
       <script src="http://maps.googleapis.com/maps/api/js?v=3.6&amp;sensor=false"></script>
-      <script type="text/javascript" src="http://leam5.incubator.uiuc.edu/jefft/openlayers/lib/OpenLayers.js">
+      <script type="text/javascript" src="http://leam5.incubator.uiuc.edu/jefft/openlayers/OpenLayers.js">
       <script type="text/javascript" src="http://leam5.incubator.uiuc.edu/jefft/openlayers/examples/google-v3.js">
             // tal:attributes="src string:$portal_url/OpenLayers.js">
       </script>
 
       <script type="text/javascript">
           jq(window).bind('load', function() {
-              var mapserv = document.getElementById('map_mapserver').innerHTML;
-              var mappath = document.getElementById('map_mappath').innerHTML;
-              var title = document.getElementById('map_title').innerHTML;
-              var trans = document.getElementById('map_transparency').innerHTML;
-              var zoom = document.getElementById('map_zoom').innerHTML;
-              var ll = document.getElementById('map_latlong').innerHTML;
+              var mapserv = jq('#map_mapserver').html();
+              var mappath = jq('#map_mappath').html();
+              var trans = jq('#map_transparency').html();
+              var zoom = jq('#map_zoom').html();
+              var ll = jq('#map_latlong').html();
               var arr = ll.split(' ');
               var lat = arr[0];
               var lon = arr[1];
@@ -41,23 +40,37 @@
               map.addControl(new OpenLayers.Control.LayerSwitcher());
 
               var blayer = new OpenLayers.Layer.Google("Google Map",
-                  {sphericalMercator: true});
-              //var osm = new OpenLayers.Layer.OSM("Simple OSM");
-              
-              var simmap = new OpenLayers.Layer.WMS( title,
-                  mapserv,
-                  { "map": mappath, 
-                    sphericalMercator: true,
-                    transparent: true, 
-                    format: "image/png",
-                    layers: "final4",
-                  },
-                  { 
-                    isBaseLayer: false, 
-                    opacity: trans,
+                  { sphericalMercator: true,
+                    displayInLayerSwitcher: false,
                   });
+              map.addLayer(blayer);
+              //var osm = new OpenLayers.Layer.OSM("Simple OSM");
 
-              map.addLayers([blayer, simmap]);
+              jq('.navTreeItem .contenttype-simmap').each(function() {
+                  var mappath = "";
+                  jq.ajax({
+                       url: jq(this).attr('href')+'/getMapPath',
+                       async: false,
+                       success: function(data) {
+                           mappath=data;
+                       }
+                  });
+                  var simmap = new OpenLayers.Layer.WMS( 
+                      jq(this).find('span').text(),
+                      mapserv,
+                      { "map": mappath,
+                        sphericalMercator: true,
+                        transparent: true, 
+                        format: "image/png",
+                        layers: "final4",
+                      },
+                      {
+                        isBaseLayer: false, 
+                        opacity: trans,
+                        visibility: false,
+                      });
+                  map.addLayer(simmap);
+              });
 
               map.setCenter(new OpenLayers.LonLat(lon, lat).transform(
                  new OpenLayers.Projection("EPSG:4326"),
@@ -98,10 +111,8 @@
       <div id="map_transparency" tal:content="context/transparency" />
       <div id="map_latlong" tal:content="context/latlong" />
       <div id="map_zoom" tal:content="python:here.getZoom()" />
-      
     </div>
 
-    <p id="request">request</p>
     <p class="documentDescription">
       <metal:field use-macro="python:here.widget('details', mode='view')"/>
     </p>
