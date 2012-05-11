@@ -67,7 +67,7 @@
                       {
                         isBaseLayer: false, 
                         opacity: trans,
-                        visibility: false,
+                        visibility: jq(this).hasClass('navTreeCurrentNode'),
                       });
                   map.addLayer(simmap);
               });
