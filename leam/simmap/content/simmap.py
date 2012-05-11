@@ -185,7 +185,7 @@ class SimMap(base.ATCTContent):
     def _calc_latlong(self, mapPath):
         # Seeks through a map file and finds the EXTENT field
         # Once found, it calculates a center lat and long and returns it
-        # Relevant line is in form: EXTENT long1 lat1 long2 lat2
+        # Relevant line is in form: lat long
         mapfile = open(mapPath, 'r')
         for l in mapfile:
             if l.find('EXTENT') != -1:

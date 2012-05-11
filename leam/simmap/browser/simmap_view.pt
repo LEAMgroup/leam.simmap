@@ -97,7 +97,7 @@
       <div id="map_title" tal:content="context/title_or_id" />
       <div id="map_transparency" tal:content="context/transparency" />
       <div id="map_latlong" tal:content="context/latlong" />
-      <div id="map_zoom" tal:content="context/zoom" />
+      <div id="map_zoom" tal:content="python:here.getZoom()" />
       
     </div>
 

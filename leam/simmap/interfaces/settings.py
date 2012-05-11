@@ -1,7 +1,7 @@
 from zope import schema
 from zope.interface import Interface
 
-from leam.luc import lucMessageFactory as _
+from leam.simmap import simmapMessageFactory as _
 
 
 class ISimMapSettings(Interface):
