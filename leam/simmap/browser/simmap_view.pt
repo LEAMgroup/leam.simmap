@@ -15,11 +15,11 @@
       <script src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA01-FfVbmG9RcrCarzrnSPxQhOr6KWfzjyj-oR0i6-lITXbPO1RSgvBIyihUF9BdCDtDjETkmziVHDQ'>
       </script>
       -->
-      <script src="http://maps.googleapis.com/maps/api/js?v=3.6&amp;sensor=false"></script>
-      <script type="text/javascript" src="http://leam5.incubator.uiuc.edu/jefft/openlayers/OpenLayers.js">
-      <script type="text/javascript" src="http://leam5.incubator.uiuc.edu/jefft/openlayers/examples/google-v3.js">
-            // tal:attributes="src string:$portal_url/OpenLayers.js">
-      </script>
+
+      <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3.6&sensor=false"></script>
+
+      <script type="text/javascript" src="http://leam5.incubator.uiuc.edu/jefft/openlayers/OpenLayers.js"> </script>
+
 
       <script type="text/javascript">
           jq(window).bind('load', function() {
@@ -86,6 +86,8 @@
 
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main">
+
+    <div tal:replace="structure provider:plone.contentviews" />
 
     <div tal:replace="structure provider:plone.abovecontenttitle" />
 

@@ -13,4 +13,9 @@
         />
   </class>
 
+  <subscriber for="..interfaces.ISimMap 
+      Products.Archetypes.interfaces.IObjectEditedEvent"
+      handler=".simmap.removeLEAM"
+      />
+
 </configure>

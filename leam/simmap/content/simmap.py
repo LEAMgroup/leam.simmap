@@ -95,6 +95,15 @@ simmapSchema['description'].storage = atapi.AnnotationStorage()
 schemata.finalizeATCTSchema(simmapSchema, moveDiscussion=False)
 
 
+def removeLEAM(simmap, event):
+    """Remove the LEAM specific version of the simmap files from the FSS
+    managed directory. This is generally called after simmap edits to 
+    rebuild the mapfile and leam.files directory.
+    """
+    p = os.path.split(simmap.getSimImage().path)[0]
+    os.system('rm -rf %s/leam.*' % p)
+    
+
 class SimMap(base.ATCTContent):
     """SimMap version 2"""
     implements(ISimMap)
@@ -204,6 +213,7 @@ class SimMap(base.ATCTContent):
     #security.declareProtected(permissions.View, "getMapPath")
     security.declarePublic("getMapPath")
     def getMapPath(self):
+        """returns the file system path to the Simmap mapFile"""
         #import pdb; pdb.set_trace()
 
         path, mapfile = os.path.split(self.getMapFile().path)
@@ -212,8 +222,8 @@ class SimMap(base.ATCTContent):
         # If this is the first run, create the needed files
         if not os.path.exists(mymap):
             self._create_files(self.getSimImage().path, self.getMapFile().path)
-            if not self.getLatlong():
-                self.setLatlong(self._calc_latlong(mymap))
+        if not self.getLatlong():
+            self.setLatlong(self._calc_latlong(mymap))
 
         return mymap
 
@@ -229,7 +239,7 @@ class SimMap(base.ATCTContent):
     def get_layer(self, REQUEST, RESPONSE):
         """Download the GIS Layer"""
 
-        RESPONSE.redirect(context.absolute_url()+'/download_at/simImage')
+        RESPONSE.redirect(context.absolute_url()+'/at_download/simImage')
         return
         #RESPONSE.setHeader('X-Sendfile', p);
         #RESPONSE.setHeader('Content-Type', 'application/octet-stream')
@@ -241,7 +251,7 @@ class SimMap(base.ATCTContent):
     def get_mapfile(self, REQUEST, RESPONSE):
         """Download the mapfile """
 
-        RESPONSE.redirect(context.absolute_url()+'/download_at/mapFile')
+        RESPONSE.redirect(context.absolute_url()+'/at_download/mapFile')
         return
         #p = self.getMapFile().path
         #RESPONSE.setHeader('X-Sendfile', p);
