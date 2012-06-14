@@ -36,14 +36,14 @@
                   projection: "EPSG:900913",
                   //allOverlays: true,
                   };
-              map = new OpenLayers.Map('map', options);
-              map.addControl(new OpenLayers.Control.LayerSwitcher());
+              olmap = new OpenLayers.Map('map', options);
+              olmap.addControl(new OpenLayers.Control.LayerSwitcher());
 
               var blayer = new OpenLayers.Layer.Google("Google Map",
                   { sphericalMercator: true,
                     displayInLayerSwitcher: false,
                   });
-              map.addLayer(blayer);
+              olmap.addLayer(blayer);
               //var osm = new OpenLayers.Layer.OSM("Simple OSM");
 
               jq('.navTreeItem .contenttype-simmap').each(function() {
@@ -69,12 +69,12 @@
                         opacity: trans,
                         visibility: jq(this).hasClass('navTreeCurrentNode'),
                       });
-                  map.addLayer(simmap);
+                  olmap.addLayer(simmap);
               });
 
-              map.setCenter(new OpenLayers.LonLat(lon, lat).transform(
+              olmap.setCenter(new OpenLayers.LonLat(lon, lat).transform(
                  new OpenLayers.Projection("EPSG:4326"),
-                 map.getProjectionObject()), zoom);    
+                 olmap.getProjectionObject()), zoom);    
               }
           );
       </script>
