@@ -38,6 +38,14 @@
                   };
               olmap = new OpenLayers.Map('map', options);
               olmap.addControl(new OpenLayers.Control.LayerSwitcher());
+              olmap.events.register('changelayer', null, function(evt) {
+
+                  // should update the legend here
+                  if (evt.property === "visibility") {
+                      var dummy = 0;
+                      //alert(evt.layer.map + " visibility changed");
+                  }
+              });
 
               var blayer = new OpenLayers.Layer.Google("Google Map",
                   { sphericalMercator: true,

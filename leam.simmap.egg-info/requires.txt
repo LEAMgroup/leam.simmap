@@ -1,4 +1,5 @@
 setuptools
+plone.app.registry
 
 [tests]
 zope.testing
