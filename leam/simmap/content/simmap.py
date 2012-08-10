@@ -60,8 +60,8 @@ simmapSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
             label=_(u"Transparency"),
             description=_(u"0.0 = transparent, 1.0 = opaque"),
         ),
-        default=_(u"0.7"),
-        validators=('isDecimal'),
+        default = 0.7,
+        validators = ('isDecimal'),
     ),
 
 
@@ -80,8 +80,8 @@ simmapSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
             label=_(u"Zoom Level"),
             description=_(u"0 = No Zoom, 19 = Full Zoom"),
         ),
-        required=False,
-        validators=('isInt'),
+        default = 10,
+        validators = ('isInt'),
     ),
 
 ))
