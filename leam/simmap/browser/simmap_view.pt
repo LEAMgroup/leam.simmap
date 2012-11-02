@@ -14,7 +14,8 @@
 
       <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3.6&sensor=false"></script>
 
-      <script type="text/javascript" src="http://leam5.incubator.uiuc.edu/jefft/openlayers/OpenLayers.js"> </script>
+      <link rel="stylesheet" href="/++resource++ol_theme/default/style.tidy.css" type="text/css" />
+      <script type="text/javascript" src="/++resource++simmap.js"> </script>
 
 
       <script type="text/javascript">
@@ -28,8 +29,11 @@
               var lat = arr[0];
               var lon = arr[1];
 
+              OpenLayers.ImgPath = "/++resource++ol_images/";
+
               var options = {
                   projection: "EPSG:900913",
+                  theme: null,
                   //allOverlays: true,
                   };
               olmap = new OpenLayers.Map('map', options);

@@ -146,17 +146,16 @@ class SimMap(base.ATCTContent):
                 if fname.endswith('/'):
                     continue
 
-                # save all normal files
-                outfile = os.path.join(myfiles, os.path.basename(fname))
-                f = open(outfile, 'wb')
+                # save all normal files in lower case!
+                ofile = os.path.join(myfiles, os.path.basename(fname).lower())
+                f = open(ofile, 'wb')
                 f.write(zip.read(fname))
                 f.close()
 
                 # save the outfile name if it's the primary file
-                n, ext = os.path.splitext(fname)
+                n, ext = os.path.splitext(ofile)
                 if ext in ['.shp', '.tif', '.img']:
-                    layer = os.path.join('leam.files',
-                            os.path.basename(fname))
+                    layer = os.path.join('leam.files', ofile)
 
         # if it's not a zip file, we assume it's a valid GIS layer
         except zipfile.BadZipfile:
@@ -231,7 +230,7 @@ class SimMap(base.ATCTContent):
     def get_mapserve(self, REQUEST, RESPONSE):
         """redirects to the mapserver to aid in debugging"""
         mymap = self.getMapPath()
-        RESPONSE.redirect("http://datacenter.leamgroup.com/cgi-bin/mapserv?mode=map&map=%s" % mymap)
+        RESPONSE.redirect("http://plone.leamgroup.com/cgi-bin/mapserv?mode=map&map=%s" % mymap)
         
 
     #security.declareProtected(permissions.View, "get_layer")

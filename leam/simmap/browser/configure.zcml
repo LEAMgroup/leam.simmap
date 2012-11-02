@@ -23,6 +23,23 @@
         permission="zope2.View"
         />
 
+    <browser:resourceDirectory
+        name="ol_images"
+        directory="images"
+        permission="zope2.View"
+        />
+
+    <browser:resourceDirectory
+        name="ol_theme"
+        directory="theme"
+        permission="zope2.View"
+        />
+
+    <browser:resource
+        name="simmap.js"
+        file="simmap.js"
+        />
+
     <plone:portletRenderer
         portlet="plone.app.portlets.portlets.navigation.INavigationPortlet"
         layer="..interfaces.ISimMap"

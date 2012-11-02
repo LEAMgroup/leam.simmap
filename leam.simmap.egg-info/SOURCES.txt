@@ -29,7 +29,6 @@ leam/simmap/browser/nav.py
 leam/simmap/browser/navigation.pt
 leam/simmap/browser/navigation_recurse.pt
 leam/simmap/browser/simmap_view.pt
-leam/simmap/browser/simmap_view.pt.bak
 leam/simmap/browser/simmap_view.py
 leam/simmap/content/__init__.py
 leam/simmap/content/configure.zcml
