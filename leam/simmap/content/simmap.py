@@ -2,6 +2,8 @@
 """
 
 from zope.interface import implements, directlyProvides
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
 
 from AccessControl import ClassSecurityInfo
 
@@ -13,6 +15,7 @@ from iw.fss.FileSystemStorage import FileSystemStorage
 
 from leam.simmap import simmapMessageFactory as _
 from leam.simmap.interfaces import ISimMap
+from leam.simmap.interfaces import ISimMapSettings
 from leam.simmap.config import PROJECTNAME
 
 import os
@@ -229,34 +232,24 @@ class SimMap(base.ATCTContent):
     security.declarePublic("get_mapserve")
     def get_mapserve(self, REQUEST, RESPONSE):
         """redirects to the mapserver to aid in debugging"""
+        settings = getUtility(IRegistry).forInterface(ISimMapSettings)
         mymap = self.getMapPath()
-        RESPONSE.redirect("http://plone.leamgroup.com/cgi-bin/mapserv?mode=map&map=%s" % mymap)
+
+        RESPONSE.redirect("%s?mode=map&map=%s" % (settings.mapserver, mymap))
         
 
     #security.declareProtected(permissions.View, "get_layer")
     security.declarePublic("get_layer")
     def get_layer(self, REQUEST, RESPONSE):
         """Download the GIS Layer"""
-
-        RESPONSE.redirect(context.absolute_url()+'/at_download/simImage')
+        RESPONSE.redirect(self.absolute_url()+'/at_download/simImage')
         return
-        #RESPONSE.setHeader('X-Sendfile', p);
-        #RESPONSE.setHeader('Content-Type', 'application/octet-stream')
-        #RESPONSE.setHeader('Content-Disposition',
-        #      'attachment; filename="' + str(os.path.basename(p)) + '"')
 
     #security.declareProtected(permissions.View, "get_mapfile")
     security.declarePublic("get_mapfile")
     def get_mapfile(self, REQUEST, RESPONSE):
         """Download the mapfile """
-
-        RESPONSE.redirect(context.absolute_url()+'/at_download/mapFile')
+        RESPONSE.redirect(self.absolute_url()+'/at_download/mapFile')
         return
-        #p = self.getMapFile().path
-        #RESPONSE.setHeader('X-Sendfile', p);
-        #RESPONSE.setHeader('Content-Type', 'text/plain')
-        #RESPONSE.setHeader('Content-Disposition',
-        #      'attachment; filename="' + str(os.path.basename(p)) + '"')
-
 
 atapi.registerType(SimMap, PROJECTNAME)
