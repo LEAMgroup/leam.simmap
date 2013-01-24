@@ -15,8 +15,7 @@
       <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3.6&sensor=false"></script>
 
       <link rel="stylesheet" href="/++resource++ol_theme/default/style.tidy.css" type="text/css" />
-      <script type="text/javascript" src="/++resource++simmap.js"> </script>
-
+      <script type="text/javascript" src="/++resource++openlayers.js"> </script>
 
       <script type="text/javascript">
           jq(window).bind('load', function() {

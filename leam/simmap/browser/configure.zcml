@@ -40,6 +40,11 @@
         file="simmap.js"
         />
 
+    <browser:resource
+        name="openlayers.js"
+        file="openlayers.js"
+        />
+
     <plone:portletRenderer
         portlet="plone.app.portlets.portlets.navigation.INavigationPortlet"
         layer="..interfaces.ISimMap"
