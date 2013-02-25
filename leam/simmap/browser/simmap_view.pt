@@ -5,94 +5,38 @@
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="leam.simmap">
 <head>
+  <!-- not sure why this was set but it was causing the action bar to
+       be hidden.
   <metal:block fill-slot="top_slot"
     tal:define="dummy python:request.set('disable_border',0);
                 portal_state context/@@plone_portal_state;
                 portal_url portal_state/portal_url" />
+  -->
+
     <metal:block metal:fill-slot="javascript_head_slot">
 
+      <link rel="stylesheet" href="++resource++ol_theme/default/style.tidy.css" type="text/css" />
 
       <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3.6&sensor=false"></script>
+      <script type="text/javascript" src="++resource++openlayers.js"> </script>
+      <script type="text/javascript" src="++resource++simmap.js"> </script>
 
-      <link rel="stylesheet" href="/++resource++ol_theme/default/style.tidy.css" type="text/css" />
-      <script type="text/javascript" src="/++resource++openlayers.js"> </script>
-
-      <script type="text/javascript">
-          jq(window).bind('load', function() {
-              var mapserv = jq('#map_mapserver').html();
-              var mappath = jq('#map_mappath').html();
-              var trans = jq('#map_transparency').html();
-              var zoom = jq('#map_zoom').html();
-              var ll = jq('#map_latlong').html();
-              var arr = ll.split(' ');
-              var lat = arr[0];
-              var lon = arr[1];
-
-              OpenLayers.ImgPath = "/++resource++ol_images/";
-
-              var options = {
-                  projection: "EPSG:900913",
-                  theme: null,
-                  //allOverlays: true,
-                  };
-              olmap = new OpenLayers.Map('map', options);
-              olmap.addControl(new OpenLayers.Control.LayerSwitcher());
-              olmap.events.register('changelayer', null, function(evt) {
-
-                  // should update the legend here
-                  if (evt.property === "visibility") {
-                      var dummy = 0;
-                      //alert(evt.layer.map + " visibility changed");
-                  }
-              });
-
-              var blayer = new OpenLayers.Layer.Google("Google Map",
-                  { sphericalMercator: true,
-                    displayInLayerSwitcher: false,
-                  });
-              olmap.addLayer(blayer);
-              //var osm = new OpenLayers.Layer.OSM("Simple OSM");
-
-              jq('.navTreeItem .contenttype-simmap').each(function() {
-                  var mappath = "";
-                  jq.ajax({
-                       url: jq(this).attr('href')+'/getMapPath',
-                       async: false,
-                       success: function(data) {
-                           mappath=data;
-                       }
-                  });
-                  var simmap = new OpenLayers.Layer.WMS( 
-                      jq(this).find('span').text(),
-                      mapserv,
-                      { "map": mappath,
-                        sphericalMercator: true,
-                        transparent: true, 
-                        format: "image/png",
-                        layers: "final4",
-                      },
-                      {
-                        isBaseLayer: false, 
-                        opacity: trans,
-                        visibility: jq(this).hasClass('navTreeCurrentNode'),
-                      });
-                  olmap.addLayer(simmap);
-              });
-
-              olmap.setCenter(new OpenLayers.LonLat(lon, lat).transform(
-                 new OpenLayers.Projection("EPSG:4326"),
-                 olmap.getProjectionObject()), zoom);    
-              }
-          );
-      </script>
   </metal:block>
 
 </head>
 
 <body>
+    <div metal:fill-slot="main">
+      <tal:main-macro metal:define-macro="main">
 
-<metal:content-core fill-slot="content-core">
-    <metal:content-core define-macro="content-core">
+    <div tal:replace="structure provider:plone.abovecontenttitle" />
+
+    <h1 tal:content="context/title_or_id" class="documentFirstHeading">
+      Title
+    </h1>
+
+    <div tal:replace="structure provider:plone.belowcontenttitle" />
+    <div tal:replace="structure provider:plone.abovecontentbody" />
 
     <div id="map" class="olMap" style="width:100%;height: 500px;">
                 <!-- openlayers map -->
@@ -107,7 +51,7 @@
       <div id="map_zoom" tal:content="python:here.getZoom()" />
     </div>
 
-    <p class="documentDescription">
+    <p class="simmapDownload">
       <a href="download" tal:attributes="href string:${context/absolute_url}/at_download/simImage">download</a>
     </p>
 
@@ -115,8 +59,12 @@
       <metal:field use-macro="python:here.widget('details', mode='view')"/>
     </p>
 
-    </metal:content-core>
-</metal:content-core>
+
+    </tal:main-macro>
+
+    <div tal:replace="structure provider:plone.belowcontentbody" />
+
+    </div>
 
 </body>
 </html>
