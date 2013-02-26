@@ -20,6 +20,7 @@ from leam.simmap.config import PROJECTNAME
 
 import os
 import zipfile
+import json
 
 __widget__ = """
 <div id="map" class="olMap" style="width:{width};height:{height};">
@@ -27,6 +28,7 @@ __widget__ = """
 </div>
 
 <div id="map_parameters" style="display:none;">
+  <div id="map_url">{url}</div>
   <div id="map_mapserver">{mapserver}</div>
   <div id="map_mappath">{mappath}</div>
   <div id="map_title">{title}</div>
@@ -247,6 +249,7 @@ class SimMap(base.ATCTContent):
         settings = getUtility(IRegistry).forInterface(ISimMapSettings)
 
         return __widget__.format(width=width, height=height,
+                             url=self.absolute_url(),
                              mapserver=settings.mapserver,
                              mappath=self._get_mappath(),
                              title=self.title_or_id(),
@@ -271,8 +274,8 @@ class SimMap(base.ATCTContent):
                     zoom = self.zoom
                     )
                   
-        self.request.response.setHeader("content-type", "application/json")
-        return meta
+        self.REQUEST.RESPONSE.setHeader("content-type", "application/json")
+        return json.dumps(meta)
 
 
     # Dynamically finds mapfile
