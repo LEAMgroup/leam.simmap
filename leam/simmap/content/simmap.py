@@ -21,6 +21,21 @@ from leam.simmap.config import PROJECTNAME
 import os
 import zipfile
 
+__widget__ = """
+<div id="map" class="olMap" style="width:{width};height:{height};">
+            <!-- openlayers map -->
+</div>
+
+<div id="map_parameters" style="display:none;">
+  <div id="map_mapserver">{mapserver}</div>
+  <div id="map_mappath">{mappath}</div>
+  <div id="map_title">{title}</div>
+  <div id="map_transparency">{transparency}</div>
+  <div id="map_latlong">{latlong}</div>
+  <div id="map_zoom">{zoom}</div>
+</div>
+"""
+
 simmapSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
 
     # -*- Your Archetypes field definitions here ... -*-
@@ -210,27 +225,67 @@ class SimMap(base.ATCTContent):
         return '%s %s'%(lat,long)
 
 
+    def _get_mappath(self):
+        """returns the full path of the map file"""
+
+        path, mapfile = os.path.split(self.getMapFile().path)
+        mappath = os.path.join(path, 'leam.'+mapfile)
+
+        # If this is the first run, create the needed files
+        if not os.path.exists(mappath):
+            self._create_files(self.getSimImage().path, self.getMapFile().path)
+        if not self.getLatlong():
+            self.setLatlong(self._calc_latlong(mappath))
+
+        return mappath
+
+
+    def getWidget(self, width, height):
+        """return simmap as widget for use in other pages"""
+        #import pdb; pdb.set_trace()
+
+        settings = getUtility(IRegistry).forInterface(ISimMapSettings)
+
+        return __widget__.format(width=width, height=height,
+                             mapserver=settings.mapserver,
+                             mappath=self._get_mappath(),
+                             title=self.title_or_id(),
+                             transparency=self.transparency,
+                             latlong=self.latlong,
+                             zoom=self.zoom)
+
+
+    security.declarePublic("getMapMeta")
+    def getMapMeta(self):
+        """returns the SimMap meta data"""
+        #import pdb; pdb.set_trace()
+
+        settings = getUtility(IRegistry).forInterface(ISimMapSettings)
+
+        meta = dict(
+                    title = self.Title(),
+                    mappath = self._get_mappath(),
+                    mapserve = settings.mapserver,
+                    transparency = self.transparency,
+                    latlong = self.latlong,
+                    zoom = self.zoom
+                    )
+                  
+        self.request.response.setHeader("content-type", "application/json")
+        return meta
+
+
     # Dynamically finds mapfile
     # Makes calculations and allocations if it is the first time viewing
     #security.declareProtected(permissions.View, "getMapPath")
     security.declarePublic("getMapPath")
     def getMapPath(self):
         """returns the file system path to the Simmap mapFile"""
-        #import pdb; pdb.set_trace()
+        return self._get_mappath()
 
-        path, mapfile = os.path.split(self.getMapFile().path)
-        mymap = os.path.join(path, 'leam.'+mapfile)
-
-        # If this is the first run, create the needed files
-        if not os.path.exists(mymap):
-            self._create_files(self.getSimImage().path, self.getMapFile().path)
-        if not self.getLatlong():
-            self.setLatlong(self._calc_latlong(mymap))
-
-        return mymap
-
-    security.declarePublic("get_mapserve")
-    def get_mapserve(self, REQUEST, RESPONSE):
+    # changed from get_mapserve to get_mapserver with an R for consistency
+    security.declarePublic("get_mapserver")
+    def get_mapserver(self, REQUEST, RESPONSE):
         """redirects to the mapserver to aid in debugging"""
         settings = getUtility(IRegistry).forInterface(ISimMapSettings)
         mymap = self.getMapPath()
