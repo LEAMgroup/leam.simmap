@@ -11,45 +11,67 @@ var simmap = (function(jq, ol) {
     return {
         init: function() {
 
-              ol.ImgPath = "/++resource++ol_images/";
+            ol.ImgPath = "/++resource++ol_images/";
 
-              var options = {
-                  projection: "EPSG:900913",
-                  theme: null,
-                  //allOverlays: true,
-                  };
-              olmap = new ol.Map('map', options);
-              olmap.addControl(new ol.Control.LayerSwitcher());
-              olmap.events.register('changelayer', null, function(evt) {
+            var options = {
+                projection: "EPSG:900913",
+                theme: null,
+                //allOverlays: true,
+                };
+            olmap = new ol.Map('map', options);
+            olmap.addControl(new ol.Control.LayerSwitcher());
+            olmap.events.register('changelayer', null, function(evt) {
 
-                  // should update the legend here
-                  if (evt.property === "visibility") {
-                      var dummy = 0;
-                      //alert(evt.layer.map + " visibility changed");
-                  }
-              });
+                // should update the legend here
+                if (evt.property === "visibility") {
+                    var dummy = 0;
+                    //alert(evt.layer.map + " visibility changed");
+                }
+            });
 
-              var blayer = new ol.Layer.Google("Google Map",
-                  { sphericalMercator: true,
-                    displayInLayerSwitcher: false,
-                  });
-              olmap.addLayer(blayer);
-              //var osm = new ol.Layer.OSM("Simple OSM");
+            var blayer = new ol.Layer.Google("Google Map",
+                { sphericalMercator: true,
+                  displayInLayerSwitcher: false,
+                });
+            olmap.addLayer(blayer);
+            //var osm = new ol.Layer.OSM("Simple OSM");
 
-              // get the map data for the active simmap
-              var url = jq('#map_url').html();
-              if (url) {
-                  layers[url] = "";
-                  jq.getJSON(
-                      url+'/getMapMeta',
-                      function(data) {
-                          layers[url] = data;
-                          simmap.addLayer(url, true);
-                          simmap.centerOnLayer(url);
-                      }
-                  );
-              };
+            // get the map data for the active simmap
+            var url = jq('#map_url').html();
+            if (url) {
+                layers[url] = "";
+                jq.getJSON(
+                    url+'/getMapMeta',
+                    function(data) {
+                        layers[url] = data;
+                        simmap.addLayer(url, true);
+                        simmap.centerOnLayer(url);
+                    }
+                );
+            };
 
+            // get list of all layers specified
+            //  -- current  assumes that all layers are visible
+            //  -- centering is done on first map
+            jq('.map-url').each(function(idx) {
+                var url = jq(this).html();
+                if (idx === 0) {
+                    var centered = url;
+                }
+                if (!(url in layers)) {
+                    layers[url] = "";
+                    jq.getJSON(
+                        url + '/getMapMeta',
+                        function(data) {
+                            layers[url] = data;
+                            simmap.addLayer(url, true);
+                            if (url === centered) {
+                                simmap.centerOnLayer(url);
+                            }
+                        }
+                    );
+                }
+            });
 
             // add any layers from the navigation portlet
             jq('.navTreeItem .contenttype-simmap').each(function() {
@@ -61,7 +83,8 @@ var simmap = (function(jq, ol) {
                         function(data) {
                             layers[url] = data;
                             simmap.addLayer(url, false);
-                    });
+                        }
+                    );
                 }
             });
         },
