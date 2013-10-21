@@ -36,27 +36,13 @@ var simmap = (function(jq, ol) {
             olmap.addLayer(blayer);
             //var osm = new ol.Layer.OSM("Simple OSM");
 
-            // get the map data for the active simmap
-            var url = jq('#map_url').html();
-            if (url) {
-                layers[url] = "";
-                jq.getJSON(
-                    url+'/getMapMeta',
-                    function(data) {
-                        layers[url] = data;
-                        simmap.addLayer(url, true);
-                        simmap.centerOnLayer(url);
-                    }
-                );
-            };
-
             // get list of all layers specified
             //  -- current  assumes that all layers are visible
-            //  -- centering is done on first map
+            //  -- centering is done on first (prime) map
             jq('.map-url').each(function(idx) {
                 var url = jq(this).html();
                 if (idx === 0) {
-                    var centered = url;
+                    var prime = url;
                 }
                 if (!(url in layers)) {
                     layers[url] = "";
@@ -64,8 +50,9 @@ var simmap = (function(jq, ol) {
                         url + '/getMapMeta',
                         function(data) {
                             layers[url] = data;
-                            simmap.addLayer(url, true);
-                            if (url === centered) {
+                            simmap.addLayer(url, false);
+                            if (url === prime) {
+                                simmap.setVis(url, true)
                                 simmap.centerOnLayer(url);
                             }
                         }
@@ -74,6 +61,8 @@ var simmap = (function(jq, ol) {
             });
 
             // add any layers from the navigation portlet
+            // NOTE: should this be optional based on site? on the simmap?
+            // NOTE: check for layers that are in the current directory
             jq('.navTreeItem .contenttype-simmap').each(function() {
                 var url = jq(this).attr('href');
                 if (!(url in layers))  {
@@ -90,7 +79,7 @@ var simmap = (function(jq, ol) {
         },
 
         addLayer: function(url, vis) {
-            var newlayer = new ol.Layer.WMS(
+            layers[url].olLayer = new ol.Layer.WMS(
                 layers[url].title,
                 layers[url].mapserve,
                 { "map": layers[url].mappath,
@@ -104,7 +93,21 @@ var simmap = (function(jq, ol) {
                   "visibility": vis,
                 }
             );
-            olmap.addLayer(newlayer);
+            olmap.addLayer(layers[url].olLayer);
+        },
+
+        // basic methods for controlling layer visibility
+        setVis: function(url, vis) {
+            layers[url].olLayer.setVisibility(vis);
+        },
+
+        toggleVis: function(url) {
+            l = layers[url].olLayer;
+            if (l.visibility) {
+                l.setVisibility(false); }
+            else {
+                l.setVisibility(true);
+            }
         },
 
         // centers the map on the specified layer
@@ -114,6 +117,8 @@ var simmap = (function(jq, ol) {
                new ol.Projection("EPSG:4326"),
                olmap.getProjectionObject()), layers[url].zoom);    
         },
+
+        // OLDER CODE BELOW
 
         enableOverlay: function(mapName, rawmarks, trans) {
           

@@ -46,14 +46,10 @@
                 <!-- openlayers map -->
     </div>
 
-    <div id="map_parameters" style="display:none;">
-      <div id="map_url" tal:content="context/absolute_url" />
-      <div id="map_mapserver" tal:content="view/mapserver" />
-      <div id="map_mappath" tal:content="python:here.getMapPath()" />
-      <div id="map_title" tal:content="context/title_or_id" />
-      <div id="map_transparency" tal:content="context/transparency" />
-      <div id="map_latlong" tal:content="context/latlong" />
-      <div id="map_zoom" tal:content="python:here.getZoom()" />
+    <div id="simmaps" style="display:none">
+      <div class="map-url" tal:repeat="map view/maps" tal:content="map">
+         <!-- URL -->
+      </div>
     </div>
 
     <p class="simmapDownload">
