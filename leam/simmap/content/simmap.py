@@ -175,7 +175,7 @@ class SimMap(base.ATCTContent):
                 # save the outfile name if it's the primary file
                 n, ext = os.path.splitext(ofile)
                 if ext in ['.shp', '.tif', '.img']:
-                    layer = os.path.join('leam.files', ofile)
+                    layer = os.path.join('leam.files', os.path.basename(ofile))
 
         # if it's not a zip file, we assume it's a valid GIS layer
         except zipfile.BadZipfile:
