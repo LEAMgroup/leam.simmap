@@ -38,6 +38,15 @@ __widget__ = """
 </div>
 """
 
+WMS_ENABLE = """
+    WEB
+        METADATA
+            wms_enable_request "*"
+        END
+    END
+
+"""
+
 simmapSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
 
     # -*- Your Archetypes field definitions here ... -*-
@@ -144,10 +153,10 @@ class SimMap(base.ATCTContent):
     zoom = atapi.ATFieldProperty('zoom')
 
 
-    def _extract_layer(self, src):
+    def extract_layer(self, src):
         """Attmpts to unzip the <src> file and save files to disk.  If <src>
            is not a zip file no changes are made on the file system.
-           _extract_layer returns the name of the layer (filename only)
+           extract_layer returns the name of the layer (filename only)
            appropriate for modifying the mapfile DATA parameter.
         """
 
@@ -184,33 +193,46 @@ class SimMap(base.ATCTContent):
         return layer
 
 
-    def _create_files(self, image, mapfile):
-        """_create_files is responsible for unpacking any compressed
-           image files (using _try_unzip) and creating a custom mapfile
-           that has the DATA field modified to point to the local files.
-           Modified mapfile will be named with 'leam.' filename prefix.
+    def create_files(self, layer, mapfile):
+        """create_files is responsible for unpacking any compressed
+           layer files (using extract_layer) and creating a custom mapfile
+           that has the DATA field modified to point to the local files
+           and enables WMS capabilities if necessary.  Modified mapfile
+           will be named with 'leam.' filename prefix.
 
-           <image> is the absolute path to the GIS layer being imported.
-           <mapfile> is the absoluate path to the mapfile.
+           @layer -- absolute path to the GIS layer being imported.
+           @mapfile -- absoluate path to the mapfile.
         """
-        layer = self._extract_layer(image)
+        layer = self.extract_layer(layer)
 
         path, mapname = os.path.split(mapfile)
         mymap = os.path.join(path, 'leam.'+mapname)
 
         mapout = open(mymap, 'w')
-        mapin = open(mapfile)
-        for l in mapin:
+        s = open(mapfile, 'r').read()
+        wms = s.find('wms_enable_request')
+        for l in s.splitlines():
+
+            # replace the DATA field
             indent = l.find('DATA')
-            if l.find('DATA') == -1:
-                mapout.write(l)
-            else:
+            if indent > -1 and l.find('METADATA') == -1:
                 mapout.write('%sDATA "%s"\n' % (' '*indent, layer))
-        mapin.close()
+                continue
+
+            # enable WMS just before the LAYER field if necessary
+            indent = l.find('LAYER')
+            if indent > -1 and wms == -1:
+                mapout.write(WMS_ENABLE)
+                mapout.write(l+'\n')
+                continue
+
+            # write the original line in all other cases
+            mapout.write(l+'\n')
+
         mapout.close()
 
 
-    def _calc_latlong(self, mapPath):
+    def calc_latlong(self, mapPath):
         # Seeks through a map file and finds the EXTENT field
         # Once found, it calculates a center lat and long and returns it
         # Relevant line is in form: lat long
@@ -227,17 +249,17 @@ class SimMap(base.ATCTContent):
         return '%s %s'%(lat,long)
 
 
-    def _get_mappath(self):
-        """returns the full path of the map file"""
+    def get_mappath(self):
+        """return the full path of the map file"""
 
         path, mapfile = os.path.split(self.getMapFile().path)
         mappath = os.path.join(path, 'leam.'+mapfile)
 
         # If this is the first run, create the needed files
         if not os.path.exists(mappath):
-            self._create_files(self.getSimImage().path, self.getMapFile().path)
+            self.create_files(self.getSimImage().path, self.getMapFile().path)
         if not self.getLatlong():
-            self.setLatlong(self._calc_latlong(mappath))
+            self.setLatlong(self.calc_latlong(mappath))
 
         return mappath
 
@@ -251,7 +273,7 @@ class SimMap(base.ATCTContent):
         return __widget__.format(width=width, height=height,
                              url=self.absolute_url(),
                              mapserver=settings.mapserver,
-                             mappath=self._get_mappath(),
+                             mappath=self.get_mappath(),
                              title=self.title_or_id(),
                              transparency=self.transparency,
                              latlong=self.latlong,
@@ -267,7 +289,7 @@ class SimMap(base.ATCTContent):
 
         meta = dict(
                     title = self.Title(),
-                    mappath = self._get_mappath(),
+                    mappath = self.get_mappath(),
                     mapserve = settings.mapserver,
                     transparency = self.transparency,
                     latlong = self.latlong,
@@ -284,7 +306,7 @@ class SimMap(base.ATCTContent):
     security.declarePublic("getMapPath")
     def getMapPath(self):
         """returns the file system path to the Simmap mapFile"""
-        return self._get_mappath()
+        return self.get_mappath()
 
     # changed from get_mapserve to get_mapserver with an R for consistency
     security.declarePublic("get_mapserver")
