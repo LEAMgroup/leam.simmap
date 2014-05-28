@@ -22,7 +22,7 @@
       <script type="text/javascript" src="++resource++simmap.js"> </script>
 
       <script type="text/javascript">
-          jq(document).ready(simmap.init);
+          jQuery(document).ready(simmap.init);
       </script>
 
   </metal:block>

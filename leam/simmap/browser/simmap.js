@@ -154,6 +154,6 @@ var simmap = (function(jq, ol) {
             document.getElementById(mapName).innerHTML = " ";
         },
     };
-})(jq, OpenLayers);
+})(jQuery, OpenLayers);
 
 
