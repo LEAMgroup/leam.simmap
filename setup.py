@@ -12,7 +12,7 @@ def read(*rnames):
 version = '2.0'
 
 long_description = (
-    read('README.txt')
+    read('README.md')
     + '\n' +
     'Change history\n'
     '**************\n'
