@@ -7,12 +7,15 @@ from setuptools import setup, find_packages
 
 
 def read(*rnames):
-    return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
+    try:
+        return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
+    except IOError:
+        return ''
 
 version = '2.0'
 
 long_description = (
-    read('README.txt')
+    read('README.md')
     + '\n' +
     'Change history\n'
     '**************\n'
@@ -22,7 +25,7 @@ long_description = (
     'Detailed Documentation\n'
     '**********************\n'
     + '\n' +
-    read('leam', 'simmap', 'README.md')
+    read('leam', 'simmap', 'README.text')
     + '\n' +
     'Contributors\n'
     '************\n'
