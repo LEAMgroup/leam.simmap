@@ -11,10 +11,10 @@ var simmap = (function(jq, ol) {
     return {
         init: function() {
 
-            ol.ImgPath = "/++resource++ol_images/";
+            ol.ImgPath = "++resource++ol_images/";
 
             var options = {
-                projection: "EPSG:900913",
+                projection: "EPSG:3857",
                 theme: null,
                 //allOverlays: true,
                 };

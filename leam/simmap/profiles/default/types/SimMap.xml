@@ -6,7 +6,7 @@
   <property name="description"
     i18n:translate="">A GIS map viewer with selectable overlays</property>
   <property name="content_meta_type">SimMap</property>
-  <property name="content_icon">document_icon.gif</property>
+  <property name="content_icon">++resource++ol_images/16px_globe.png</property>
   <property name="product">leam.simmap</property>
   <property name="factory">addSimMap</property>
   <property name="immediate_view">atct_edit</property>
