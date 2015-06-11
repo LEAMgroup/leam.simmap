@@ -1,0 +1,4 @@
+<layers>
+  <layer name="leam.simmap" 
+    interface="leam.simmap.interfaces.ISimMapInstalled" />
+</layers>

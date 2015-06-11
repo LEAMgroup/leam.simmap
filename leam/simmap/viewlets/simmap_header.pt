@@ -1,0 +1,5 @@
+<link rel="stylesheet" class="required"
+  href="http://openlayers.org/en/v3.4.0/css/ol.css" >
+<script src=http://openlayers.org/en/v3.4.0/build/ol.js"
+  type="text/javascript"></script>
+
